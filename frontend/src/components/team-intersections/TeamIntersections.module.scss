@@ -5,14 +5,35 @@
   grid-area: intersections;
   padding: 16px 16px 20px;
 
-  &__title {
+  &__header {
     @extend %flex-row;
 
-    @include set-font-size(18px, 20px, 700);
-
     align-items: center;
+    justify-content: space-between;
+
     margin-bottom: 16px;
     padding: 8px 8px 16px;
+
     border-bottom: 1px solid $grey-225;
+  }
+
+  &__title {
+    @include set-font-size(18px, 20px, 700);
+  }
+
+  &__filterBtn {
+    @include set-font-size(16px, 20px, 600);
+
+    cursor: pointer;
+    color: $bright-blue;
+    background-color: transparent;
+    border: 0;
+  }
+
+  &__text {
+    @include set-font-size(16px, 20px, 600);
+
+    color: $grey-118;
+    letter-spacing: -0.01rem;
   }
 }

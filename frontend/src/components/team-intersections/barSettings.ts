@@ -7,5 +7,6 @@ export const barSettings = {
     'rgba(106, 207, 247, 1)',
     'rgba(176, 129, 247, 1)',
   ],
-  size: ['372', '335', '298', '261', '224', '184'],
+  dashBackground:
+    ' center / contain repeat-x url("/src/assets/dash.svg") rgba(225 223 235 / 100%)',
 };

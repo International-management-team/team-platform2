@@ -1,42 +1,40 @@
 import clsx from 'clsx';
 import styles from './TeamIntersectionsComponent.module.scss';
-import { useState } from 'react';
+import { numWord } from 'src/utils/formatting';
 
 type ComponentProps = {
   width: string;
   background: string;
   total: number;
   time: string;
+  onClick: () => void;
+  isActive: boolean;
 };
 
 export const TeamIntersectionsComponent = (
   props: ComponentProps,
 ): JSX.Element => {
-  const [isActive, setIsActive] = useState(false);
-
   return (
     <div
       className={clsx(
         styles.intersections,
-        isActive && styles.intersections_active,
+        props.isActive && styles.intersections_active,
       )}
-      style={{
-        width: `${props.width}`,
-      }}
-      onClick={() => setIsActive(!isActive)}
+      onClick={() => props.onClick()}
     >
       <div className={styles.intersections__info}>
         <div className={styles.intersections__total}>
-          {props.total + ' участников'}
+          {props.total +
+            ' ' +
+            numWord(props.total, ['участник', 'участника', 'участников'])}
         </div>
         <div className={styles.intersections__time}>{props.time}</div>
       </div>
       <div
         className={styles.intersections__bar}
         style={{
-          backgroundColor: `${props.background}`,
-          borderRadius: 16,
-          height: 16,
+          background: `${props.background}`,
+          width: props.width,
         }}
       ></div>
     </div>
