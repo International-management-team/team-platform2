@@ -3,12 +3,14 @@ import base64
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.core.files.base import ContentFile
-from projects.models import Project, Task, TaskUser
+from projects.models import Project, ProjectUser, Task, TaskUser
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from api.services import add_project_example, get_members_num_per_interval
+from api.validators import (validate_first_last_names, validate_offset,
+                            validate_password)
+from projects.models import Project, Task, TaskUser
 from users.models import TimeZone
-
-from .validators import validate_first_last_names, validate_offset, validate_password
 
 User = get_user_model()
 
@@ -50,7 +52,7 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
     Здесь определены поля, которые будут отображаться при создании пользователя.
     """
 
-    password = serializers.CharField(validators=[validate_password])
+    # password = serializers.CharField(validators=[validate_password])
     first_name = serializers.CharField(validators=[validate_first_last_names])
     last_name = serializers.CharField(validators=[validate_first_last_names])
 
@@ -63,7 +65,9 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
         Хэшируем пароль перед сохранением в базу данных.
         """
         validated_data["password"] = make_password(validated_data["password"])
-        return super().create(validated_data)
+        user = super().create(validated_data)
+        add_project_example(user)
+        return user
 
     def to_representation(self, instance):
         """
@@ -238,6 +242,7 @@ class ProjectPostSerializer(serializers.ModelSerializer):
         owner = self.context["request"].user
         validated_data["owner"] = owner
         validated_data["participants"] += [owner]
+        validated_data.pop("tasks")
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
@@ -248,6 +253,11 @@ class ProjectPostSerializer(serializers.ModelSerializer):
 
         validated_data["participants"] = participants
 
+        for task in validated_data["tasks"]:
+            if task.task_project.id != instance.id:
+                raise ValidationError(
+                    f"Задача '{task}' с id = {task.id} принадлежит другому " f"проекту и не может быть добавлена."
+                )
         return super().update(instance, validated_data)
 
     class Meta:
@@ -277,23 +287,107 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Project
         fields = ["total_members", "members", "members_per_interval"]
 
-    def get_total_members(self, obj):
+    def get_total_members(self, project):
         """Возвращает количество участников команды."""
-        return obj.participants.count()
+        return project.participants.count()
 
-    def get_members_per_interval(self, obj):
+    def get_members_per_interval(self, project):
         """
         Возвращает список словарей с часовыми интервалами, и количеством
         доступных участников проекта в каждый интервал времени.
         """
-        time_intervals = [f"{hour:02d}:00 - {(hour + 1) % 24:02d}:00" for hour in range(24)]  # генерирует список
-        # часовых интервалов в виде ["00:00 - 01:00", ..., "23:00 - 00:00"]
-        result = []
-        for interval in time_intervals:
-            start_time = interval.split(" - ")[0]
-            # для корректности в подсчете конец интервала представляем в виде "23:59, т.е. начало + 59 минут."
-            end_time = start_time[:2] + ":59"
-            result.append(
-                {interval: obj.participants.filter(work_start__lte=start_time, work_finish__gte=end_time).count()}
-            )
-        return result
+        user = self.context["request"].user
+        return get_members_num_per_interval(user, project)
+
+    def validate(self, data):
+        """Валидация добавления участника проекта."""
+        if self.context["request"].method == "POST":
+            user = self.context["user"]
+            project = self.context["project"]
+            if ProjectUser.objects.filter(user_id=user, project_id=project).exists():
+                raise ValidationError("Участник с таким email уже состоит в команде проекта.")
+            if not user.is_active:
+                raise ValidationError("Пользователь с таким email больше не активен.")
+            return project
+
+
+class SetPasswordSerializer(serializers.Serializer):
+    new_password = serializers.CharField(validators=[validate_password])
+    current_password = serializers.CharField()
+
+    class Meta:
+        model = User
+        fields = ["new_password", "current_password"]
+
+    def create(self, validated_data):
+        """
+        Хэшируем пароль перед сохранением в базу данных.
+        """
+        validated_data["new_password"] = make_password(validated_data["new_password"])
+        return super().create(validated_data)
+
+    def validate_current_password(self, value):
+        user = self.context["request"].user
+        is_password_valid = user.check_password(value)
+
+        if not is_password_valid:
+            raise ValidationError(f"Введен неверный пароль пользователя '{user}'.")
+        return value
+
+
+class UnauthorizedErrorSerializer(serializers.Serializer):
+    detail = serializers.CharField(
+        default="Authentication credentials were not provided.",
+        help_text="Сообщение об ошибке",
+    )
+
+
+class NotFoundErrorSerializer(serializers.Serializer):
+    detail = serializers.CharField(
+        default="Not found.",
+        help_text="Сообщение об ошибке",
+    )
+
+
+class InternalServerErrorSerializer(serializers.Serializer):
+    detail = serializers.CharField(
+        default="Internal server error.",
+        help_text="Сообщение об ошибке",
+    )
+
+
+class BadRequestUserErrorSerializer(serializers.Serializer):
+    detail = serializers.CharField(
+        default="Длина пароля должна быть от 8 до 22 символов.",
+        help_text="Сообщение об ошибке",
+    )
+
+
+class BadRequestProjectTaskErrorSerializer(serializers.Serializer):
+    detail = serializers.CharField(
+        default="This field may not be blank.",
+        help_text="Сообщение об ошибке",
+    )
+
+
+class BadRequestTimezoneErrorSerializer(serializers.Serializer):
+    detail = serializers.CharField(
+        default="У вас не задана временная зона.",
+        help_text="Сообщение об ошибке",
+    )
+
+
+class AddMemberSerializer(serializers.Serializer):
+    """Сериализатор добавления пользователя в команду проекта."""
+
+    email = serializers.EmailField()
+
+    class Meta:
+        model = User
+        fields = ["email"]
+        read_only_fields = ["email"]
+
+    def validate_email(self, value):
+        if not User.objects.filter(email=value).exists():
+            raise ValidationError("Пользователь с таким email не найден.")
+        return value
