@@ -4,6 +4,8 @@
 .intersections {
   @extend %flex-column;
 
+  cursor: pointer;
+
   gap: 4px;
 
   height: 48px;
@@ -23,7 +25,7 @@
   &__info {
     @extend %flex-row;
 
-    gap: 8px;
+    gap: 16px;
   }
 
   &__total {
@@ -38,6 +40,7 @@
 
   &__bar {
     height: 16px;
-    border-radius: 16px;
+    padding: 0 5px;
+    border-radius: 4px;
   }
 }
