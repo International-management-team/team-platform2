@@ -43,7 +43,9 @@ export const Teammate = ({
         >
           {isCheck ? <CheckedIcon /> : <UncheckedIcon />}
         </div>
-        <div className={styles['teammate__info-avatar']}></div>
+        <div className={styles['teammate__info-avatar']}>
+          {avatar && <img src={avatar} alt={name} />}
+        </div>
         <div
           className={clsx(
             styles['teammate__info-text'],
