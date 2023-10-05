@@ -19,6 +19,8 @@ from .serializers import (
     TaskGetSerializer,
     TaskPostSerializer,
     UnauthorizedErrorSerializer,
+    AddMemberSerializer,
+    TeamSerializer,
 )
 
 user_view_set_schema = extend_schema_view(
@@ -251,14 +253,14 @@ project_view_set_schema = extend_schema_view(
 )
 
 
-project_view_team_schema = extend_schema(
+project_view_add_member_schema = extend_schema(
     tags=["Projects - разное"],
-    summary="Получить список команд",
-    description="Этот метод позволяет получить список команд для проекта.",
+    summary="Добавить участника в команду проекта",
+    description="Этот метод позволяет добавить участника в команду проекта.",
     parameters=[OpenApiParameter("id", int, OpenApiParameter.PATH, description="Введите уникальный ID проекта:")],
     responses={
         200: OpenApiResponse(
-            response=ProjectGetSerializer,
+            response=AddMemberSerializer,
             description="OK",
         ),
         400: OpenApiResponse(
@@ -281,31 +283,32 @@ project_view_team_schema = extend_schema(
 )
 
 
-project_view_project_example = extend_schema(
+project_view_team_schema = extend_schema(
     tags=["Projects - разное"],
-    summary="Тестовый проект",
-    description="Тестовый проект.",
+    summary="Получить список команд",
+    description="Этот метод позволяет получить список команд для проекта.",
+    parameters=[OpenApiParameter("id", int, OpenApiParameter.PATH, description="Введите уникальный ID проекта:")],
     responses={
         200: OpenApiResponse(
-            response=ProjectGetSerializer,
+            response=TeamSerializer,
             description="OK",
         ),
-        # 400: OpenApiResponse(
-        #     response=BadRequestTimezoneErrorSerializer,
-        #     description="Error: Bad Request",
-        # ),
-        # 401: OpenApiResponse(
-        #     response=UnauthorizedErrorSerializer,
-        #     description="Error: Unauthorized",
-        # ),
-        # 404: OpenApiResponse(
-        #     response=NotFoundErrorSerializer,
-        #     description="Error: Not Found",
-        # ),
-        # 500: OpenApiResponse(
-        #     response=InternalServerErrorSerializer,
-        #     description="Error: Internal server error",
-        # ),
+        400: OpenApiResponse(
+            response=BadRequestTimezoneErrorSerializer,
+            description="Error: Bad Request",
+        ),
+        401: OpenApiResponse(
+            response=UnauthorizedErrorSerializer,
+            description="Error: Unauthorized",
+        ),
+        404: OpenApiResponse(
+            response=NotFoundErrorSerializer,
+            description="Error: Not Found",
+        ),
+        500: OpenApiResponse(
+            response=InternalServerErrorSerializer,
+            description="Error: Internal server error",
+        ),
     },
 )
 

@@ -15,7 +15,8 @@ from projects.models import Project, ProjectUser, Task
 
 from .decorators import (project_view_set_schema, project_view_team_schema,
                          task_view_set_schema, user_me_view_patch_schema,
-                         user_me_view_request_schema, user_view_set_schema)
+                         user_me_view_request_schema, user_view_set_schema,
+                         project_view_add_member_schema)
 
 User = get_user_model()
 
@@ -95,6 +96,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         serializer = TeamSerializer(project, context={"request": request})
         return Response(serializer.data)
 
+    @project_view_add_member_schema
     @action(
         detail=True,
         methods=["post"],
