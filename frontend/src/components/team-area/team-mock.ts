@@ -7,7 +7,6 @@ export const TeamMock: TTeammate[] = [
     email: 'Keon14@hotmail.com',
     phone: '1-982-976-9536',
     time: '07:00-16:00',
-    // avatar: 'https://uprostim.com/wp-content/uploads/2021/05/image078-4.jpg'
   },
   {
     name: 'Lyla Trantow',
