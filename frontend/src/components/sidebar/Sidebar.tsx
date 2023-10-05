@@ -6,20 +6,29 @@ import { useDispatch, useSelector } from 'src/services/hooks';
 import { selectUserMe } from 'src/services/slices/authSlice';
 import {
   addProject,
+  getAllProjects,
   selectProjects,
-  setCurrent,
 } from 'src/services/slices/projectSlice';
+import { useEffect } from 'react';
 
 export const Sidebar = (): JSX.Element => {
   const userMe = useSelector(selectUserMe);
-  const projectList = useSelector(selectProjects);
+  const projects = useSelector(selectProjects);
   const dispatch = useDispatch();
 
   const createNewProject = () => {
-    const count = projectList.length;
-
-    dispatch(addProject());
-    dispatch(setCurrent(count + 1));
+    dispatch(
+      addProject({
+        name: 'Без названия ' + projects?.length, //подумать как создавать нумерацию
+        description: 'Описание проекта',
+        status: 'Onboarding',
+        priority: 'maximum',
+        deadline: '2022-05-01', //надо реализовать автоматическое создание даты
+        participants: [],
+        tasks: [],
+        start: '2022-05-01', //надо реализовать автоматическое создание даты
+      }),
+    );
   };
 
   return (

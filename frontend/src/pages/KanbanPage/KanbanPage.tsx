@@ -13,11 +13,11 @@ export const KanbanPage = (): JSX.Element => {
 
   return (
     <section className="content">
-      <KanbanTable columns={copy.columns} />
+      {/* <KanbanTable columns={copy.columns} /> */}
 
       <ProjectSidebar
         showActions={showProjectActions}
-        project={currentProject}
+        project={currentProject || undefined} //не смотрела что будет, если передать undef
       />
     </section>
   );

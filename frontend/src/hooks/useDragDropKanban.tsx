@@ -92,7 +92,7 @@ export const useDragDropKanban = (columnItems: ColumnType[]): DradDropType => {
         componentRedraw();
       }
 
-      dispatch(updateColumns(columns));
+      // dispatch(updateColumns(columns)); //!сейчас такого метода нет
     },
   };
 
@@ -121,7 +121,7 @@ export const useDragDropKanban = (columnItems: ColumnType[]): DradDropType => {
         componentRedraw();
       }
 
-      dispatch(updateColumns(columns));
+      // dispatch(updateColumns(columns));
     },
   };
 

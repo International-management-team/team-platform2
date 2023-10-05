@@ -61,6 +61,8 @@ export enum URLS {
   SIGN_IN = `${URLS.AUTH}/jwt/create/`,
   USER_ME = `${URLS.AUTH}/users/me/`,
   SET_PASSWORD = `${URLS.AUTH}/users/set_password/`,
+
+  PROJECTS = 'projects/',
 }
 
 // Project Types
@@ -76,6 +78,17 @@ export type ColumnType = {
   id: number;
   title: string;
   tasks: TaskType[];
+};
+
+export type ProjectRequestData = {
+  name: string;
+  description: string;
+  participants: UserType[];
+  tasks: TaskType[];
+  start: string;
+  deadline: string;
+  status: string;
+  priority: string;
 };
 
 export type ProjectType = {
