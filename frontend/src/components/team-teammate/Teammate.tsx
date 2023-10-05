@@ -1,9 +1,7 @@
-import styles from './Teammate.module.scss';
-import clsx from 'clsx';
-import { ReactComponent as UncheckedIcon } from 'assets/select-unchecked.svg';
-import { ReactComponent as CheckedIcon } from 'assets/select-checked.svg';
-import { ReactComponent as DeleteIcon } from 'assets/icon-delete.svg';
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
+import styles from './Teammate.module.scss';
+import { ReactComponent as DeleteIcon } from 'assets/icon-delete.svg';
 
 export type TTeammate = {
   id?: string;
@@ -37,12 +35,16 @@ export const Teammate = ({
   return (
     <div className={styles.teammate}>
       <div className={styles.teammate__info}>
-        <div
+        {/* <div
           className={clsx(styles.check, styles.icon__wrapper)}
           onClick={handlerCheck}
         >
           {isCheck ? <CheckedIcon /> : <UncheckedIcon />}
+        </div> */}
+        <div className={styles['teammate__info-checkbox']}>
+          <input type="checkbox" name="teammate-check" id="teammate-check" />
         </div>
+
         <div className={styles['teammate__info-avatar']}></div>
         <div
           className={clsx(
