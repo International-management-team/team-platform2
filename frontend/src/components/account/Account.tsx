@@ -4,22 +4,17 @@ import type { UserType } from 'src/services/api/types';
 import { Link } from 'react-router-dom';
 import { AvatarIcon } from '../UI/avatar-icon/AvatarIcon';
 import { useDispatch } from 'src/services/hooks';
-import { HeaderState, setHeaderState } from 'src/services/slices/headerSlice';
+import { closePopup } from 'src/services/slices/popupSlice';
 
 export const Account = (props: UserType): JSX.Element => {
   const dispatch = useDispatch();
-
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    dispatch(setHeaderState(HeaderState.PROFILE));
-  };
+  React.useLayoutEffect(() => {
+    dispatch(closePopup());
+  });
 
   return (
     <figure>
-      <Link
-        to={'/profile'}
-        className={styles.account}
-        onClick={(e) => handleClick(e)}
-      >
+      <Link to={'/profile'} className={styles.account}>
         <AvatarIcon isSmall={true} />
         <figcaption className={styles.account__caption}>
           <p

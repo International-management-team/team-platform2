@@ -21,7 +21,7 @@ export const LoginPage: React.FC = () => {
   const userMe = useSelector(selectUserMe);
 
   React.useEffect(() => {
-    if (userMe) navigate(routes['profile'].path, { replace: true });
+    if (userMe) navigate(routes['canban'].path, { replace: true });
   }, [userMe, navigate]);
 
   const {
@@ -49,7 +49,7 @@ export const LoginPage: React.FC = () => {
           text="С возвращением"
           descrption="Введите свои данные и войдите в аккаунт"
         />
-        <div>
+        <div className={styles.login__inputs}>
           <Input
             register={register}
             errorObject={errors[InputName.EMAIL]}

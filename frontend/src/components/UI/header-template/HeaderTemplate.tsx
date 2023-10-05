@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'src/services/hooks';
 import {
   selectAuthIsLoading,
   selectAuthError,
+  logout,
 } from 'src/services/slices/authSlice';
 import { NavLink } from 'react-router-dom';
 import { selectCurrentProject } from 'src/services/slices/projectSlice';
@@ -21,8 +22,13 @@ import {
   VIEWS,
   selectHeaderState,
   selectHeaderView,
+  setHeaderState,
   setHeaderView,
 } from 'src/services/slices/headerSlice';
+import { PopupTemplate } from '../popup/Popup';
+import { closePopup, openPopup } from 'src/services/slices/popupSlice';
+import { openSidebar } from 'src/services/slices/sidebarSlice';
+import { useLocation } from 'react-router-dom';
 
 const users = [
   { name: 'User 1', src: userAvatar },
@@ -33,29 +39,57 @@ export const HeaderTemplate = (): JSX.Element => {
   const isAuthApiLoading = useSelector(selectAuthIsLoading);
   const isAuthApiError = useSelector(selectAuthError);
   const [profileInfo, setProfileInfo] = useState<string>('');
+  const { isOpen } = useSelector((store) => store.popup);
+  const dispatch = useDispatch();
+  const location = useLocation();
 
   const headerState = useSelector(selectHeaderState);
   const headerView = useSelector(selectHeaderView);
 
-  const dispatch = useDispatch();
+  const togglePopap = () => {
+    if (isOpen) {
+      dispatch(closePopup());
+    } else {
+      dispatch(openPopup());
+    }
+  };
 
   const currentProject = useSelector(selectCurrentProject);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const id = e.currentTarget.id;
-
-    switch (id) {
-      case VIEWS.KANBAN:
-        dispatch(setHeaderView(VIEWS.KANBAN));
-        break;
-      case VIEWS.LIST:
-        dispatch(setHeaderView(VIEWS.LIST));
-        break;
-      case VIEWS.TEAM:
-        dispatch(setHeaderView(VIEWS.TEAM));
-        break;
-    }
+  const handlerLogout = () => {
+    dispatch(logout());
   };
+
+  const handleOpenSidebar = () => {
+    dispatch(openSidebar());
+    dispatch(closePopup());
+  };
+
+  const popupButtonsProfile = [
+    {
+      title: 'Выйти из аккаунта',
+      onClick: handlerLogout,
+    },
+    {
+      title: 'Удалить аккаунт',
+      onClick: () => console.log('Удалить аккаунт'),
+    },
+  ];
+
+  const popupButtonsProgect = [
+    {
+      title: 'О проекте',
+      onClick: handleOpenSidebar,
+    },
+    {
+      title: 'Выйти из проекта',
+      onClick: () => console.log('Выйти из проекта'),
+    },
+    {
+      title: 'Удалить проект',
+      onClick: () => console.log('Удалить проект'),
+    },
+  ];
 
   useEffect(() => {
     const showMessage = (message: string, duration: number): Promise<void> => {
@@ -75,11 +109,29 @@ export const HeaderTemplate = (): JSX.Element => {
     }
   }, [isAuthApiLoading, isAuthApiError]);
 
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    let currentState = HeaderState.KANBAN;
+    let currentView = VIEWS.KANBAN;
+
+    if (currentPath === '/profile') {
+      currentState = HeaderState.PROFILE;
+    } else if (currentPath.includes('/team')) {
+      currentState = HeaderState.KANBAN;
+      currentView = VIEWS.TEAM;
+    }
+
+    dispatch(setHeaderState(currentState));
+    dispatch(setHeaderView(currentView));
+  }, [location]);
+
   return (
     <section className={styles.header}>
       <h1 className={styles.header__title}>
         {headerState === HeaderState.KANBAN
-          ? currentProject.name
+          ? headerView === VIEWS.TEAM
+            ? 'Команда проекта'
+            : currentProject.name
           : 'Личный кабинет'}
       </h1>
 
@@ -99,7 +151,6 @@ export const HeaderTemplate = (): JSX.Element => {
                     styles['header__button-area_active'],
                 )}
                 id={VIEWS.KANBAN}
-                onClick={(e) => handleClick(e)}
               >
                 <KanbanIcon className={styles['header__switch-icon']} />
                 <div
@@ -132,7 +183,6 @@ export const HeaderTemplate = (): JSX.Element => {
               )}
               to={`/${currentProject.id}/team`}
               id={VIEWS.TEAM}
-              onClick={(e) => handleClick(e)}
             >
               <UserAvatar users={users} />
             </NavLink>
@@ -155,8 +205,18 @@ export const HeaderTemplate = (): JSX.Element => {
           className={styles['header__icon']}
           src={settingsIcon}
           alt={`Кнопка ${settingsIcon}`}
+          onClick={togglePopap}
         />
       </div>
+      {isOpen && (
+        <PopupTemplate
+          buttons={
+            headerState === HeaderState.PROFILE
+              ? popupButtonsProfile
+              : popupButtonsProgect
+          }
+        />
+      )}
     </section>
   );
 };
