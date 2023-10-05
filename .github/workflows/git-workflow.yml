@@ -6,6 +6,7 @@ on:
     branches:
       - develop
       - backend-feat-frontend-2023-10-05
+      - backend-feat-frontend-2023-10-05-2.0
 
 jobs:
   build_and_push_backend_to_docker_hub:
@@ -54,6 +55,7 @@ jobs:
       - name: Create .env file
         run: |
           echo "API_ENDPOINT=${{ secrets.API_ENDPOINT }}" > frontend/.env
+          echo "API_ENDPOINT_BASE=${{ secrets.API_ENDPOINT }}" > frontend/.env
         working-directory: ${{ github.workspace }}
 
       - name: Push Frontend to Docker Hub
