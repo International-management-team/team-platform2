@@ -54,6 +54,7 @@ export const TeamArea = (): JSX.Element => {
             phone={item.phone}
             time={item.time}
             key={item.email}
+            avatar={item.avatar}
             isAllChecked={isAllChecked}
           />
         ))}
