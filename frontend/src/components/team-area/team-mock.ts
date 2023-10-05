@@ -2,6 +2,7 @@ import { TTeammate } from '../team-teammate/Teammate';
 
 export const TeamMock: TTeammate[] = [
   {
+    id: '1',
     name: 'Kayleigh Yost',
     jobTitle: 'Human Paradigm Producer',
     email: 'Keon14@hotmail.com',
@@ -9,6 +10,7 @@ export const TeamMock: TTeammate[] = [
     time: '07:00-16:00',
   },
   {
+    id: '2',
     name: 'Lyla Trantow',
     jobTitle: 'Central Operations Executive',
     email: 'Imogene_Buckridge1@gmail.com',
@@ -16,6 +18,7 @@ export const TeamMock: TTeammate[] = [
     time: '09:00-12:00',
   },
   {
+    id: '3',
     name: 'Kitty Considine',
     jobTitle: 'Regional Group Supervisor',
     email: 'Magnolia_Daugherty40@hotmail.com',

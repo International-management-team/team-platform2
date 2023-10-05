@@ -4,7 +4,7 @@ import styles from './Teammate.module.scss';
 import { ReactComponent as DeleteIcon } from 'assets/icon-delete.svg';
 
 export type TTeammate = {
-  id?: string;
+  id: string;
   name: string;
   jobTitle: string;
   email: string;
@@ -12,6 +12,7 @@ export type TTeammate = {
   avatar?: string;
   time?: string;
   isAllChecked?: boolean;
+  checked?: boolean;
 };
 
 export const Teammate = ({
@@ -23,28 +24,26 @@ export const Teammate = ({
   time,
   id,
   isAllChecked,
+  checked,
 }: TTeammate): JSX.Element => {
-  const [isCheck, setIsCheck] = useState(isAllChecked);
+  const [isChecked, setIsChecked] = useState(checked);
 
-  useEffect(() => setIsCheck(isAllChecked), [isAllChecked]);
-
-  const handlerCheck = () => {
-    setIsCheck(!isCheck);
+  const handleCheck = () => {
+    setIsChecked((prev) => !prev);
   };
 
   return (
     <div className={styles.teammate}>
       <div className={styles.teammate__info}>
-        {/* <div
-          className={clsx(styles.check, styles.icon__wrapper)}
-          onClick={handlerCheck}
-        >
-          {isCheck ? <CheckedIcon /> : <UncheckedIcon />}
-        </div> */}
         <div className={styles['teammate__info-checkbox']}>
-          <input type="checkbox" name="teammate-check" id="teammate-check" />
+          <input
+            type="checkbox"
+            name="teammate-check"
+            id={`teammate-check-${id}`}
+            checked={isChecked}
+            onChange={handleCheck}
+          />
         </div>
-
         <div className={styles['teammate__info-avatar']}></div>
         <div
           className={clsx(
