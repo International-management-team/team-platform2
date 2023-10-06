@@ -5,7 +5,7 @@
   position: relative;
 
   display: grid;
-  grid-template-columns: 247px 236px 1fr;
+  grid-template-columns: 250px 236px 1fr;
   grid-template-rows: 1fr;
 
   width: 100%;
@@ -20,20 +20,57 @@
     @extend %flex-row;
 
     position: relative;
+    column-gap: 12px;
 
-    .check {
-      top: -4px;
-      left: -8px;
-      width: fit-content;
+    &-checkbox {
+      input {
+        cursor: pointer;
+
+        display: inline-block;
+
+        width: 16px;
+        height: 16px;
+        margin-top: 4px;
+
+        appearance: none;
+        border: 1.5px solid $grey-text;
+        border-radius: 4px;
+
+        &:hover {
+          border-color: $black-text;
+        }
+
+        &:focus {
+          border-color: $blue-95;
+        }
+
+        &:checked {
+          background-color: $blue-62;
+          background-image: url('assets/add_success_white.svg');
+          border-color: $blue-62;
+
+          &:hover {
+            background-color: $black-text;
+            border-color: $black-text;
+          }
+        }
+      }
     }
 
     &-avatar {
+      overflow: hidden;
+
       width: 40px;
       height: 40px;
-      margin: 0 12px 0 31px;
 
-      background-color: red;
+      background-color: $grey-225;
       border-radius: 50%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
 
     &-item {
