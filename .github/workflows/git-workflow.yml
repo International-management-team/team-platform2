@@ -7,6 +7,7 @@ on:
       - develop
       - backend-feat-frontend-2023-10-05
       - backend-feat-frontend-2023-10-05-2.0
+      - backend-feat-frontend-2023-10-05-3.0
 
 jobs:
   build_and_push_backend_to_docker_hub:
@@ -94,6 +95,7 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo ALLOWED_HOSTS=${{ secrets.ALLOWED_HOSTS }} >> .env
+            echo CORS_ALLOWED_ORIGINS=${{ secrets.CORS_ALLOWED_ORIGINS }} >> .env
 
             sudo docker-compose up -d
 #            sudo docker image prune -af
