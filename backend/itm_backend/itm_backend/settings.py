@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure")
 
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 TIME_INPUT_FORMATS = ("%H:%M",)
 
