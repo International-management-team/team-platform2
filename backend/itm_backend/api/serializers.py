@@ -117,6 +117,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             "work_finish",
             "photo",
             "telephone_number",
+            "color",
         ]
 
     def update(self, user, validated_data):
