@@ -18,8 +18,26 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 TIME_INPUT_FORMATS = ("%H:%M",)
 
 CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
 
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'Accept',
+    'Authorization',
+    'Content-Type',
+    'Origin',
+    'X-Requested-With',
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
