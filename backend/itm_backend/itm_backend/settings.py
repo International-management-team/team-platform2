@@ -17,11 +17,37 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 TIME_INPUT_FORMATS = ("%H:%M",)
 
-CORS_ALLOWED_ORIGINS = {os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")}
-
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
 CORS_ALLOW_CREDENTIALS = True
 
+# Включить SSL-перенаправление
 SECURE_SSL_REDIRECT = True
+
+# Установить заголовок X-Content-Type-Options для защиты от атаки типа MIME
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Установить заголовок X-Frame-Options для предотвращения кликджекинга
+X_FRAME_OPTIONS = 'DENY'
+
+# Установить заголовок Strict-Transport-Security (HSTS) для усиления безопасности HTTPS
+SECURE_HSTS_SECONDS = 31536000  # 1 год
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Убедитесь, что куки только через HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Запретить кэширование для страниц, доступных только через HTTPS
+SECURE_BROWSER_XSS_FILTER = True
+
+# Включить защиту от кликовой атаки
+CSRF_COOKIE_HTTPONLY = True
+
+# Очистить кэш при развертывании изменений
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 1
+CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 INSTALLED_APPS = [
     "django.contrib.admin",
