@@ -17,7 +17,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 TIME_INPUT_FORMATS = ("%H:%M",)
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+CORS_ALLOWED_ORIGINS = ["http://team-platform.ddns.net",]
 
 CORS_ALLOW_CREDENTIALS = True
 
