@@ -1,7 +1,7 @@
 name: Develop workflow
 
 on:
-  # Запуск при любом push-действии в ветку develop
+  # Запуск при любом push-действии в ветку develop и backend-feat-frontend-2023-10-05
   push:
     branches:
       - develop
