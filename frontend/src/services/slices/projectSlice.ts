@@ -1,10 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-  mockColumnItems,
-  mockEmptyColumn,
-} from 'src/utils/constants temporary/constant_temp';
 import { RootState } from '../store';
-import type { ColumnType, ProjectRequestData, ProjectType } from '../api/types';
+import type { ProjectRequestData, ProjectType } from '../api/types';
 import { projectAPI } from '../api/projectAPI';
 
 // Types

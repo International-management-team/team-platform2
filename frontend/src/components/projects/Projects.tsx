@@ -19,7 +19,12 @@ export const Projects = (): JSX.Element => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProjects());
+    dispatch(getAllProjects()).then((res) => {
+      if (res.payload instanceof Array && res.payload.length > 0) {
+        const projects = res.payload;
+        dispatch(getProject(projects[0].id));
+      }
+    });
   }, [dispatch]);
 
   useLayoutEffect(() => {

@@ -1,5 +1,14 @@
 import { ITimezoneOption } from 'react-timezone-select';
 
+export enum URLS {
+  AUTH = 'auth',
+  SIGN_UP = `${URLS.AUTH}/users/`,
+  SIGN_IN = `${URLS.AUTH}/jwt/create/`,
+  USER_ME = `${URLS.AUTH}/users/me/`,
+  SET_PASSWORD = `${URLS.AUTH}/users/set_password/`,
+  PROJECTS = 'projects/',
+}
+
 // Auth Types
 
 export type RegisterRequestData = {
@@ -55,24 +64,43 @@ export type TokenType = {
   refresh: string;
 };
 
-export enum URLS {
-  AUTH = 'auth',
-  SIGN_UP = `${URLS.AUTH}/users/`,
-  SIGN_IN = `${URLS.AUTH}/jwt/create/`,
-  USER_ME = `${URLS.AUTH}/users/me/`,
-  SET_PASSWORD = `${URLS.AUTH}/users/set_password/`,
-
-  PROJECTS = 'projects/',
-}
-
-// Project Types
+// Task Types
 
 export type TaskType = {
   id: number;
-  subtitle: string;
-  expiredDate: string;
-  img: any;
+  name: string;
+  deadline: string;
+  priority: string;
+  status: string;
+  description: string;
+  assigned_to: UserType[];
 };
+
+export type TaskRequestData = {
+  name: string;
+  deadline: string;
+  priority: string;
+  status: string;
+  description: string;
+  assigned_to: UserType[];
+};
+
+export function getAPIStatus(statusTitle: string): string {
+  switch (statusTitle) {
+    case 'Backlog':
+      return 'backlog';
+    case 'To Do':
+      return 'todo';
+    case 'In Progress':
+      return 'in_progress';
+    case 'In Review':
+      return 'in_review';
+    case 'Done':
+      return 'done';
+    default:
+      return '';
+  }
+}
 
 export type ColumnType = {
   id: number;
@@ -80,11 +108,13 @@ export type ColumnType = {
   tasks: TaskType[];
 };
 
+// Project Types
+
 export type ProjectRequestData = {
   name: string;
   description: string;
   participants: UserType[];
-  tasks: TaskType[];
+  tasks: TaskRequestData[];
   start: string;
   deadline: string;
   status: string;
@@ -93,9 +123,9 @@ export type ProjectRequestData = {
 
 export type ProjectType = {
   id: number;
+  owner: UserType;
   name: string;
   description: string;
-  owner: UserType;
   participants: UserType[];
   tasks: TaskType[];
   start: string;

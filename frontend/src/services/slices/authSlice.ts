@@ -8,6 +8,8 @@ import type {
   UpdatePasswordData,
   UserType,
 } from 'services/api/types';
+import { addProject } from './projectSlice';
+import { mockProjectExample } from 'src/utils/constants temporary/constant_temp';
 
 // Use cases
 // 1. register, post new user data > if ok response > login, post credentials > receive tokens, keep in localStorage > get userMe
@@ -47,6 +49,7 @@ export const authThunks = {
           password: userData.password,
         }),
       );
+      dispatch(addProject(mockProjectExample)); //можно реализовать это сразу через БД
     },
   ),
 

@@ -5,7 +5,6 @@ import { ProjectSidebar } from 'src/components/project-sidebar/ProjectSidebar';
 
 export const KanbanPage = (): JSX.Element => {
   const currentProject = useSelector(selectCurrentProject);
-  const copy = structuredClone(currentProject);
 
   const showProjectActions = () => {
     console.log('showProjectActions');
@@ -13,7 +12,7 @@ export const KanbanPage = (): JSX.Element => {
 
   return (
     <section className="content">
-      {/* <KanbanTable columns={copy.columns} /> */}
+      {currentProject?.tasks && <KanbanTable tasks={currentProject?.tasks} />}
 
       <ProjectSidebar
         showActions={showProjectActions}
