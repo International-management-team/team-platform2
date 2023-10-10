@@ -19,3 +19,10 @@ export function formatDate(dateStr: string): string {
   });
   return formatter.format(date);
 }
+
+// formatPhoneNumber('+7999999999') -> '+7 (999) 999-99-99'
+export function formatPhoneNumber(phone: string): string {
+  const pattern =
+    /(\+7|8)[\s(]?(\d{3})[\s)]?(\d{3})[\s-]?(\d{2})[\s-]?(\d{2})/g;
+  return phone.replace(pattern, '+7 ($2) $3-$4-$5');
+}

@@ -1,17 +1,26 @@
 import clsx from 'clsx';
 import styles from './TeamArea.module.scss';
-
 import { ReactComponent as FilterIcon } from 'assets/icon-filter-members.svg';
 import { Teammate } from '../team-teammate/Teammate';
-import { TeamMock } from './team-mock';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'src/services/hooks';
+import { selectCurrentProject } from 'src/services/slices/projectSlice';
+import { getMembers, selectMembers } from 'src/services/slices/teamSlice';
+import { formatPhoneNumber } from 'src/utils/formatting';
 
 export const TeamArea = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const currentProject = useSelector(selectCurrentProject);
+  const members = useSelector(selectMembers);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
   const handlerAllChecked = () => {
     setIsAllChecked(!isAllChecked);
   };
+
+  useEffect(() => {
+    currentProject && dispatch(getMembers(currentProject?.id));
+  }, [currentProject, dispatch]);
 
   return (
     <div className={clsx('team__element', styles.squad)}>
@@ -46,20 +55,29 @@ export const TeamArea = (): JSX.Element => {
           <span>Контакты</span>
           <span>График работы</span>
         </div>
-        {TeamMock.map((item) => (
-          <Teammate
-            name={item.name}
-            email={item.email}
-            jobTitle={item.jobTitle}
-            phone={item.phone}
-            time={item.time}
-            key={item.email}
-            avatar={item.avatar}
-            id={item.id}
-            isAllChecked={isAllChecked}
-            checked={false}
-          />
-        ))}
+        {members &&
+          members.map((item) => (
+            <Teammate
+              name={item.first_name + ' ' + item.last_name || ''}
+              email={item.email || ''}
+              jobTitle={item.role || ''}
+              phone={
+                item.telephone_number
+                  ? formatPhoneNumber(item.telephone_number)
+                  : ''
+              }
+              time={
+                item.work_start &&
+                item.work_finish &&
+                item.work_start + ' - ' + item.work_finish
+              }
+              key={item.id}
+              avatar={item.photo || ''}
+              id={item.id || 0}
+              isAllChecked={isAllChecked}
+              checked={false}
+            />
+          ))}
       </div>
     </div>
   );

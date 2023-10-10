@@ -4,7 +4,7 @@ import styles from './Teammate.module.scss';
 import { ReactComponent as DeleteIcon } from 'assets/icon-delete.svg';
 
 export type TTeammate = {
-  id: string;
+  id: number;
   name: string;
   jobTitle: string;
   email: string;

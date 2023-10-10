@@ -8,9 +8,12 @@ export enum URLS {
   SET_PASSWORD = `${URLS.AUTH}/users/set_password/`,
   PROJECTS = 'projects/',
 }
+export const getRouteMemberAdd = (projectId: number) =>
+  `${URLS.PROJECTS}${projectId}/add_member/`;
+export const getRouteMembers = (projectId: number) =>
+  `${URLS.PROJECTS}${projectId}/team/`;
 
 // Auth Types
-
 export type RegisterRequestData = {
   first_name: string;
   last_name: string;
@@ -35,10 +38,6 @@ export type UpdatePasswordData = {
 export type LoginRequestData = {
   email: string;
   password: string;
-};
-
-export type AddMemberRequestData = {
-  email: string;
 };
 
 export type UserType = {
@@ -132,4 +131,16 @@ export type ProjectType = {
   deadline: string;
   status: string;
   priority: string;
+};
+
+// Team Types
+
+export type AddMemberRequestData = {
+  email: string;
+};
+
+export type TeamResponseData = {
+  total_members: number;
+  members: UserType[];
+  // members_per_interval: IntervalType[]
 };
