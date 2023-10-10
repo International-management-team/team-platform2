@@ -3,21 +3,37 @@ import styles from './TeamIntersections.module.scss';
 import { TeamIntersectionsComponent } from '../team-intersections-component/TeamIntersectionsComponent';
 import { IntersectionsMock } from './intersections-mock';
 import { barSettings } from './barSettings';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'src/services/hooks';
+import { selectIntervals, selectMembers } from 'src/services/slices/teamSlice';
 
 export const TeamIntersections = (): JSX.Element => {
   const [selectedIntersectionIndex, setSelectedIntersectionIndex] = useState<
     number | null
   >(null);
+  const intervals = useSelector(selectIntervals);
+  const members = useSelector(selectMembers);
+
+  const intervalsArray = useMemo(() => {
+    return intervals?.map((interval) => {
+      return {
+        time: Object.keys(interval)[0],
+        members: interval[Object.keys(interval)[0]].members,
+        membersCount: interval[Object.keys(interval)[0]].members_count,
+      };
+    });
+  }, [intervals]);
 
   const maxNumberOfMembers: number = useMemo(() => {
-    return IntersectionsMock.reduce((curMaxValue, curIntersection) => {
-      if (curMaxValue > curIntersection.membersCount) {
-        return curMaxValue;
-      }
-      return curIntersection.membersCount;
-    }, 0);
-  }, []);
+    return !intervalsArray
+      ? 0
+      : intervalsArray.reduce((curMaxValue, curIntersection) => {
+          if (curMaxValue > curIntersection.membersCount) {
+            return curMaxValue;
+          }
+          return curIntersection.membersCount;
+        }, 0);
+  }, [intervalsArray]);
 
   return (
     <div className={clsx('team__element', styles.intersections)}>
@@ -33,8 +49,8 @@ export const TeamIntersections = (): JSX.Element => {
         )}
       </div>
 
-      {IntersectionsMock.length ? (
-        IntersectionsMock.map((intersection, index) => (
+      {intervalsArray && members && members?.length > 1 ? (
+        intervalsArray.map((intersection, index) => (
           <TeamIntersectionsComponent
             width={(intersection.membersCount / maxNumberOfMembers) * 100 + '%'}
             background={barSettings.color[index]}

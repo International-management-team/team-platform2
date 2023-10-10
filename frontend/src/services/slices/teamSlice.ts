@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import type {
   AddMemberRequestData,
+  IntervalType,
   TeamResponseData,
   UserType,
 } from '../api/types';
@@ -11,6 +12,7 @@ import { teamAPI } from '../api/teamAPI';
 
 type TeamStateType = {
   allMembers: UserType[] | null;
+  membersPerInterval: IntervalType[] | null;
   isLoading: boolean;
   error: null | unknown | string;
 };
@@ -19,6 +21,7 @@ type TeamStateType = {
 
 const initialState: TeamStateType = {
   allMembers: [],
+  membersPerInterval: [],
   isLoading: false,
   error: null,
 };
@@ -66,7 +69,7 @@ export const teamSlice = createSlice({
           state.error = action.payload;
         },
       )
-      // get all projects
+      // get all members
       .addCase(teamThunks.getMembers.pending, (state) => {
         state.isLoading = true;
         state.error = false;
@@ -77,6 +80,7 @@ export const teamSlice = createSlice({
           state.isLoading = false;
           state.error = false;
           state.allMembers = action.payload.members;
+          state.membersPerInterval = action.payload.members_per_interval;
         },
       )
       .addCase(
@@ -85,11 +89,14 @@ export const teamSlice = createSlice({
           state.isLoading = false;
           state.error = action.payload;
           state.allMembers = null;
+          state.membersPerInterval = null;
         },
       );
   },
 });
 
+export const selectIntervals = (state: RootState) =>
+  state.team.membersPerInterval;
 export const selectMembers = (state: RootState) => state.team.allMembers;
 export const selectTeamIsLoading = (state: RootState) => state.team.isLoading;
 export const selectTeamError = (state: RootState) => state.team.error;
