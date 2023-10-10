@@ -2,6 +2,7 @@ import styles from '../kanban-table/KanbanTable.module.scss';
 import { ReactComponent as MoreActions } from 'assets/more-actions.svg';
 import clsx from 'clsx';
 import type { TaskType } from 'src/services/api/types';
+import { formatDate } from 'src/utils/formatting';
 
 type PropsType = {
   task: TaskType;
@@ -17,7 +18,7 @@ export const KanbanTask = ({ task, currentTask }: PropsType) => {
     >
       <p className={styles.column__task_text}>{task.name}</p>
       <MoreActions className={styles.column__task_button} />
-      <p className={styles.column__task_time}>{task.deadline}</p>
+      <p className={styles.column__task_time}>{formatDate(task.deadline)}</p>
       {/* {task.img && (
         <img
           className={styles.column__task_img}
