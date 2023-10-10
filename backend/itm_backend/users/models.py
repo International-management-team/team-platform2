@@ -1,3 +1,4 @@
+import random
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import UserManager as DefaultUserManager
 from django.core.exceptions import ValidationError
@@ -30,6 +31,14 @@ class User(AbstractUser):
     Кастомная модель пользователя.
     Регистрация с помощью email.
     """
+    color_choices = [
+        ("blue", "Blue"),
+        ("cyan", "Cyan"),
+        ("green", "Green"),
+        ("magenta", "Magenta"),
+        ("orange", "Orange"),
+        ("purple", "Purple"),
+    ]
 
     def validate_photo(fieldfile_obj):
         filesize = fieldfile_obj.file.size
@@ -81,6 +90,12 @@ class User(AbstractUser):
         null=True,
         validators=[validate_photo],
     )
+    color = models.CharField(
+        verbose_name="Цвет",
+        max_length=10,
+        choices=color_choices,
+        default=random.choice(color_choices)[0],
+    )
     telephone_number = PhoneNumberField(verbose_name="Номер телефона", blank=True, null=True)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["password", "first_name", "last_name"]
@@ -105,6 +120,7 @@ class User(AbstractUser):
         self.full_clean()
         if not self.username:
             self.username = self.email
+            self.color = random.choice(self.color_choices)[0]
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
