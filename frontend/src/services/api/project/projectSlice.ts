@@ -75,6 +75,7 @@ export const projectSlice = createSlice({
       .addCase(projectThunks.getProject.pending, (state) => {
         state.isLoading = true;
         state.error = false;
+        state.curProject = null;
       })
       .addCase(
         projectThunks.getProject.fulfilled,

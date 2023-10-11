@@ -73,6 +73,8 @@ export const teamSlice = createSlice({
       .addCase(teamThunks.getMembers.pending, (state) => {
         state.isLoading = true;
         state.error = false;
+        state.allMembers = [];
+        state.membersPerInterval = [];
       })
       .addCase(
         teamThunks.getMembers.fulfilled,
