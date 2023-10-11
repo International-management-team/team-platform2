@@ -22,7 +22,7 @@ import {
 import { SingleValue } from 'react-select';
 import { ITimezoneOption } from 'react-timezone-select';
 import { useDispatch, useSelector } from 'src/services/hooks';
-import { authThunks, selectUserMe } from 'src/services/slices/authSlice';
+import { authThunks, selectUserMe } from 'src/services/api/auth/authSlice';
 import { UserAvatarUpload } from '../UI/user-avatar-upload/UserAvatarUpload';
 
 export const ProfileForm: React.FC = () => {

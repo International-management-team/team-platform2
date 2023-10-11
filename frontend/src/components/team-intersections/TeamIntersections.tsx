@@ -4,7 +4,10 @@ import { TeamIntersectionsComponent } from '../team-intersections-component/Team
 import { barSettings } from './barSettings';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'src/services/hooks';
-import { selectIntervals, selectMembers } from 'src/services/slices/teamSlice';
+import {
+  selectIntervals,
+  selectMembers,
+} from 'src/services/api/team/teamSlice';
 
 export const TeamIntersections = (): JSX.Element => {
   const [selectedIntersectionIndex, setSelectedIntersectionIndex] = useState<
@@ -13,8 +16,9 @@ export const TeamIntersections = (): JSX.Element => {
   const intervals = useSelector(selectIntervals);
   const members = useSelector(selectMembers);
 
+  //преобразование интервалов из типа IntervalsType[] (так приходят от api) в удобный тип - массив
   const intervalsArray = useMemo(() => {
-    return intervals?.map((interval) => {
+    return intervals.map((interval) => {
       return {
         time: Object.keys(interval)[0],
         members: interval[Object.keys(interval)[0]].members,
@@ -23,15 +27,14 @@ export const TeamIntersections = (): JSX.Element => {
     });
   }, [intervals]);
 
+  //маскимальное количество участников во всех интервалах
   const maxNumberOfMembers: number = useMemo(() => {
-    return !intervalsArray
-      ? 0
-      : intervalsArray.reduce((curMaxValue, curIntersection) => {
-          if (curMaxValue > curIntersection.membersCount) {
-            return curMaxValue;
-          }
-          return curIntersection.membersCount;
-        }, 0);
+    return intervalsArray.reduce((curMaxValue, curIntersection) => {
+      if (curMaxValue > curIntersection.membersCount) {
+        return curMaxValue;
+      }
+      return curIntersection.membersCount;
+    }, 0);
   }, [intervalsArray]);
 
   return (
@@ -48,7 +51,7 @@ export const TeamIntersections = (): JSX.Element => {
         )}
       </div>
 
-      {intervalsArray && members && members?.length > 1 ? (
+      {members.length > 1 ? (
         intervalsArray.map((intersection, index) => (
           <TeamIntersectionsComponent
             width={(intersection.membersCount / maxNumberOfMembers) * 100 + '%'}

@@ -1,18 +1,18 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import type {
+import { RootState } from '../../store';
+import { teamAPI } from './teamAPI';
+import {
   AddMemberRequestData,
   IntervalType,
   TeamResponseData,
-  UserType,
-} from '../api/types';
-import { teamAPI } from '../api/teamAPI';
+} from './teamTypes';
+import { UserType } from '../auth/authTypes';
 
 // Types
 
 type TeamStateType = {
-  allMembers: UserType[] | null;
-  membersPerInterval: IntervalType[] | null;
+  allMembers: UserType[];
+  membersPerInterval: IntervalType[];
   isLoading: boolean;
   error: null | unknown | string;
 };
@@ -88,8 +88,8 @@ export const teamSlice = createSlice({
         (state, action: PayloadAction<unknown>) => {
           state.isLoading = false;
           state.error = action.payload;
-          state.allMembers = null;
-          state.membersPerInterval = null;
+          state.allMembers = [];
+          state.membersPerInterval = [];
         },
       );
   },

@@ -3,8 +3,11 @@ import { ReactComponent as SignPlus } from 'assets/sidebar-plus.svg';
 import { Account } from '../account/Account';
 import { Projects } from '../projects/Projects';
 import { useDispatch, useSelector } from 'src/services/hooks';
-import { selectUserMe } from 'src/services/slices/authSlice';
-import { addProject, selectProjects } from 'src/services/slices/projectSlice';
+import { selectUserMe } from 'src/services/api/auth/authSlice';
+import {
+  addProject,
+  selectProjects,
+} from 'src/services/api/project/projectSlice';
 
 export const Sidebar = (): JSX.Element => {
   const userMe = useSelector(selectUserMe);

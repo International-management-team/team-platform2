@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'src/services/hooks';
-import { selectUserMe } from 'src/services/slices/authSlice';
+import { selectUserMe } from 'src/services/api/auth/authSlice';
 import { routes } from 'src/routes';
 
 export const ProtectedRoute: React.FC = () => {

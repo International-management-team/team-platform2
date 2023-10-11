@@ -1,10 +1,6 @@
-import { request } from './apiRequest';
-import {
-  AddMemberRequestData,
-  TeamResponseData,
-  getRouteMemberAdd,
-  getRouteMembers,
-} from './types';
+import { request } from '../apiRequest';
+import { getRouteMemberAdd, getRouteMembers } from '../types';
+import { AddMemberRequestData, TeamResponseData } from './teamTypes';
 
 export const teamAPI = {
   addMember: (

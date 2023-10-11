@@ -1,6 +1,6 @@
 import { KanbanTable } from 'src/components/kanban-table/KanbanTable';
 import { useSelector } from 'src/services/hooks';
-import { selectCurrentProject } from 'src/services/slices/projectSlice';
+import { selectCurrentProject } from 'src/services/api/project/projectSlice';
 import { ProjectSidebar } from 'src/components/project-sidebar/ProjectSidebar';
 
 export const KanbanPage = (): JSX.Element => {
@@ -12,7 +12,7 @@ export const KanbanPage = (): JSX.Element => {
 
   return (
     <section className="content">
-      {currentProject?.tasks && <KanbanTable tasks={currentProject?.tasks} />}
+      {currentProject && <KanbanTable tasks={currentProject.tasks} />}
 
       <ProjectSidebar
         showActions={showProjectActions}

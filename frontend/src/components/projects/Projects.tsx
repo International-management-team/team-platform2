@@ -8,7 +8,7 @@ import {
   selectProjects,
   getProject,
   getAllProjects,
-} from 'src/services/slices/projectSlice';
+} from 'src/services/api/project/projectSlice';
 import { useDispatch, useSelector } from 'src/services/hooks';
 import { closePopup } from 'src/services/slices/popupSlice';
 import { closeSidebar } from 'src/services/slices/sidebarSlice';
@@ -19,9 +19,8 @@ export const Projects = (): JSX.Element => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProjects()).then((res) => {
-      if (res.payload instanceof Array && res.payload.length > 0) {
-        const projects = res.payload;
+    dispatch(getAllProjects()).then(({ payload: projects }) => {
+      if (projects instanceof Array && projects.length > 0) {
         dispatch(getProject(projects[0].id));
       }
     });
@@ -41,23 +40,22 @@ export const Projects = (): JSX.Element => {
   function renderProjects(): React.ReactNode {
     return (
       <>
-        {projects &&
-          projects.map((project) => (
-            <li key={project.id}>
-              <NavLink
-                to={`/${project.id}`}
-                className={clsx(style.projects__nav, {
-                  [style.projects__nav_active]:
-                    currentProject && currentProject.id === project.id,
-                })}
-                onClick={(e) => handleClick(e)}
-                id={`${project.id}-project`}
-              >
-                <ProjectIcon className={style.projects__icon} />
-                <span className={style.projects__name}>{project.name}</span>
-              </NavLink>
-            </li>
-          ))}
+        {projects.map((project) => (
+          <li key={project.id}>
+            <NavLink
+              to={`/${project.id}`}
+              className={clsx(style.projects__nav, {
+                [style.projects__nav_active]:
+                  currentProject && currentProject.id === project.id,
+              })}
+              onClick={(e) => handleClick(e)}
+              id={`${project.id}-project`}
+            >
+              <ProjectIcon className={style.projects__icon} />
+              <span className={style.projects__name}>{project.name}</span>
+            </NavLink>
+          </li>
+        ))}
       </>
     );
   }

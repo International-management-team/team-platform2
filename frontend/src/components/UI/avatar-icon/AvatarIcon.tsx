@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import styles from './AvatarIcon.module.scss';
-import { selectUserMe } from 'src/services/slices/authSlice';
+import { selectUserMe } from 'src/services/api/auth/authSlice';
 import { getAvatarColor } from 'src/utils/colorAvatarRandomizer/getAvatarColor';
 import clsx from 'clsx';
 

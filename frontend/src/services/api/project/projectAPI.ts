@@ -1,5 +1,6 @@
-import { request } from './apiRequest';
-import { URLS, ProjectType, ProjectRequestData } from './types';
+import { request } from '../apiRequest';
+import { URLS } from '../types';
+import { ProjectRequestData, ProjectType } from './projectTypes';
 
 export const projectAPI = {
   addProject: (data: ProjectRequestData): Promise<ProjectType> => {

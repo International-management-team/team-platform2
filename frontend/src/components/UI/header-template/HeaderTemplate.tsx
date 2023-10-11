@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Header.module.scss';
 import notificationIcon from 'src/assets/header-icons/header-notification-icon.svg';
 import searchIcon from 'src/assets/header-icons/header-search-icon.svg';
@@ -14,9 +14,9 @@ import {
   selectAuthIsLoading,
   selectAuthError,
   logout,
-} from 'src/services/slices/authSlice';
+} from 'src/services/api/auth/authSlice';
 import { NavLink } from 'react-router-dom';
-import { selectCurrentProject } from 'src/services/slices/projectSlice';
+import { selectCurrentProject } from 'src/services/api/project/projectSlice';
 import {
   HeaderState,
   VIEWS,
@@ -131,9 +131,7 @@ export const HeaderTemplate = (): JSX.Element => {
         {headerState === HeaderState.KANBAN
           ? headerView === VIEWS.TEAM
             ? 'Команда проекта'
-            : currentProject
-            ? currentProject.name
-            : '' //!подумать
+            : currentProject?.name
           : 'Личный кабинет'}
       </h1>
 
@@ -146,7 +144,7 @@ export const HeaderTemplate = (): JSX.Element => {
           <div className={styles['header__project-buttons']}>
             <div className={styles['header__button-wrapper']}>
               <NavLink
-                to={`/${currentProject && currentProject.id}`} //!подумать
+                to={`/${currentProject?.id}`}
                 className={clsx(
                   styles['header__button-area'],
                   headerView === VIEWS.KANBAN &&
@@ -183,7 +181,7 @@ export const HeaderTemplate = (): JSX.Element => {
                 headerView === VIEWS.TEAM &&
                   styles['header__button-area_active'],
               )}
-              to={`/${currentProject && currentProject.id}/team`} //!подумать
+              to={`/${currentProject?.id}/team`}
               id={VIEWS.TEAM}
             >
               <UserAvatar users={users} />

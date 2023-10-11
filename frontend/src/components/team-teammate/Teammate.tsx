@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import styles from './Teammate.module.scss';
 import { ReactComponent as DeleteIcon } from 'assets/icon-delete.svg';
@@ -6,9 +6,9 @@ import { ReactComponent as DeleteIcon } from 'assets/icon-delete.svg';
 export type TTeammate = {
   id: number;
   name: string;
-  jobTitle: string;
-  email: string;
-  phone: string;
+  jobTitle?: string;
+  email?: string;
+  phone?: string;
   avatar?: string;
   time?: string;
   isCurUser?: boolean;

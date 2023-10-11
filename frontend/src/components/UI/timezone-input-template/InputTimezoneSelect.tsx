@@ -8,7 +8,7 @@ import Select, { SingleValue, ActionMeta } from 'react-select';
 import styles from './InputTimezoneSelect.module.scss';
 import './SelectTzComponent.scss'; // <-- Управление стилями компонента Select, модульно пока не получилось (https://react-select.com/styles#inner-components)
 import { useDispatch } from 'src/services/hooks';
-import { authThunks } from 'src/services/slices/authSlice';
+import { authThunks } from 'src/services/api/auth/authSlice';
 
 type InputTimezonePropsType = {
   name: string;

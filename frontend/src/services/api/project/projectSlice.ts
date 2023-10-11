@@ -1,13 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import type { ProjectRequestData, ProjectType } from '../api/types';
-import { projectAPI } from '../api/projectAPI';
+import { RootState } from '../../store';
+import { projectAPI } from './projectAPI';
+import { ProjectRequestData, ProjectType } from './projectTypes';
 
 // Types
 
 type ProjectStateType = {
   curProject: null | ProjectType | undefined;
-  allProjects: ProjectType[] | null;
+  allProjects: ProjectType[];
   isLoading: boolean;
   error: null | unknown | string;
 };
@@ -110,7 +110,7 @@ export const projectSlice = createSlice({
         (state, action: PayloadAction<unknown>) => {
           state.isLoading = false;
           state.error = action.payload;
-          state.allProjects = null;
+          state.allProjects = [];
         },
       );
   },
