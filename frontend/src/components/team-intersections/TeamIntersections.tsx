@@ -1,9 +1,8 @@
 import clsx from 'clsx';
 import styles from './TeamIntersections.module.scss';
 import { TeamIntersectionsComponent } from '../team-intersections-component/TeamIntersectionsComponent';
-import { IntersectionsMock } from './intersections-mock';
 import { barSettings } from './barSettings';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useSelector } from 'src/services/hooks';
 import { selectIntervals, selectMembers } from 'src/services/slices/teamSlice';
 

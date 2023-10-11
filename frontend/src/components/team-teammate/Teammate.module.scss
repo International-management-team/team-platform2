@@ -111,6 +111,14 @@
   white-space: nowrap;
 }
 
+.text_secondary {
+  color: $grey-191;
+}
+
+.hide {
+  display: none;
+}
+
 .text_ordinary {
   @include set-font-size(14px, 16px, 600);
 

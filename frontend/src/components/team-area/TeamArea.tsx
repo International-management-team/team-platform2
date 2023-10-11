@@ -2,21 +2,32 @@ import clsx from 'clsx';
 import styles from './TeamArea.module.scss';
 import { ReactComponent as FilterIcon } from 'assets/icon-filter-members.svg';
 import { Teammate } from '../team-teammate/Teammate';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'src/services/hooks';
 import { selectCurrentProject } from 'src/services/slices/projectSlice';
 import { getMembers, selectMembers } from 'src/services/slices/teamSlice';
 import { formatPhoneNumber } from 'src/utils/formatting';
+import { selectAuthData } from 'src/services/slices/authSlice';
+import { UserType } from 'src/services/api/types';
 
 export const TeamArea = (): JSX.Element => {
   const dispatch = useDispatch();
   const currentProject = useSelector(selectCurrentProject);
   const members = useSelector(selectMembers);
+  const authData = useSelector(selectAuthData);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
   const handlerAllChecked = () => {
     setIsAllChecked(!isAllChecked);
   };
+
+  function sortMembersWithFirstCurUser(): UserType[] {
+    return !members
+      ? []
+      : members.slice().sort((member) => {
+          return member.id == authData.user?.id ? -1 : 1;
+        });
+  }
 
   useEffect(() => {
     currentProject && dispatch(getMembers(currentProject?.id));
@@ -56,7 +67,7 @@ export const TeamArea = (): JSX.Element => {
           <span>График работы</span>
         </div>
         {members &&
-          members.map((item) => (
+          sortMembersWithFirstCurUser().map((item) => (
             <Teammate
               name={item.first_name + ' ' + item.last_name || ''}
               email={item.email || ''}
@@ -76,6 +87,7 @@ export const TeamArea = (): JSX.Element => {
               id={item.id || 0}
               isAllChecked={isAllChecked}
               checked={false}
+              isCurUser={item.id == authData.user?.id}
             />
           ))}
       </div>
