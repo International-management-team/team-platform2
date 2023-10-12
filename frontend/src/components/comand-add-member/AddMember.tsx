@@ -2,15 +2,19 @@ import styles from './AddMember.module.scss';
 import { useForm } from 'react-hook-form';
 import { Input } from '../UI/input-template/InputTemplate';
 import { InputType, InputName } from 'src/typings/constants';
-import { AddMemberRequestData } from 'src/services/api/types';
 import { errorTexts } from 'src/utils/validation/helperTexts';
 import { patterns } from 'src/utils/validation/patterns';
 import { ButtonTemplate } from '../UI/button-template/ButtonTemplate';
 import React from 'react';
-import { useDispatch } from 'src/services/hooks';
+import { useDispatch, useSelector } from 'src/services/hooks';
+import { selectCurrentProject } from 'src/services/api/project/projectSlice';
+import { addMember } from 'src/services/api/team/teamSlice';
+import { AddMemberRequestData } from 'src/services/api/team/teamTypes';
 
 export const AddMember: React.FC = () => {
   const [addStatus, setAddStatus] = React.useState(false);
+  const dispatch = useDispatch();
+  const currentProject = useSelector(selectCurrentProject);
 
   const {
     register,
@@ -21,7 +25,10 @@ export const AddMember: React.FC = () => {
 
   const handlerFormSubmit = (data: AddMemberRequestData) => {
     console.log(data);
-    // dispatch();
+    currentProject &&
+      dispatch(
+        addMember({ projectId: currentProject?.id, addMemberData: data }),
+      );
     setAddStatus(true);
     setTimeout(() => {
       setAddStatus(false);

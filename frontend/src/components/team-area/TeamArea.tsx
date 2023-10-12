@@ -1,17 +1,35 @@
 import clsx from 'clsx';
 import styles from './TeamArea.module.scss';
-
 import { ReactComponent as FilterIcon } from 'assets/icon-filter-members.svg';
 import { Teammate } from '../team-teammate/Teammate';
-import { TeamMock } from './team-mock';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'src/services/hooks';
+import { selectCurrentProject } from 'src/services/api/project/projectSlice';
+import { getMembers, selectMembers } from 'src/services/api/team/teamSlice';
+import { formatPhoneNumber } from 'src/utils/formatting';
+import { selectAuthData } from 'src/services/api/auth/authSlice';
+import { UserType } from 'src/services/api/auth/authTypes';
 
 export const TeamArea = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const currentProject = useSelector(selectCurrentProject);
+  const members = useSelector(selectMembers);
+  const authData = useSelector(selectAuthData);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
   const handlerAllChecked = () => {
     setIsAllChecked(!isAllChecked);
   };
+
+  const sortedMembersWithFirstCurUser: UserType[] = members
+    .slice()
+    .sort((member) => {
+      return member.id == authData.user?.id ? -1 : 1;
+    });
+
+  useEffect(() => {
+    currentProject && dispatch(getMembers(currentProject?.id));
+  }, [currentProject, dispatch]);
 
   return (
     <div className={clsx('team__element', styles.squad)}>
@@ -46,18 +64,27 @@ export const TeamArea = (): JSX.Element => {
           <span>Контакты</span>
           <span>График работы</span>
         </div>
-        {TeamMock.map((item) => (
+        {sortedMembersWithFirstCurUser.map((member) => (
           <Teammate
-            name={item.name}
-            email={item.email}
-            jobTitle={item.jobTitle}
-            phone={item.phone}
-            time={item.time}
-            key={item.email}
-            avatar={item.avatar}
-            id={item.id}
+            name={member.first_name + ' ' + member.last_name}
+            email={member.email}
+            jobTitle={member.role}
+            phone={
+              member.telephone_number
+                ? formatPhoneNumber(member.telephone_number)
+                : ''
+            }
+            time={
+              member.work_start &&
+              member.work_finish &&
+              member.work_start + ' - ' + member.work_finish
+            }
+            key={member.id}
+            avatar={member.photo}
+            id={member.id}
             isAllChecked={isAllChecked}
             checked={false}
+            isCurUser={member.id == authData.user?.id}
           />
         ))}
       </div>

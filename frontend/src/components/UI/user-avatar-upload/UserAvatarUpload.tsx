@@ -3,7 +3,7 @@ import styles from './UserAvatarUpload.module.scss';
 import React from 'react';
 import { AvatarIcon } from '../avatar-icon/AvatarIcon';
 import { encodeBase64 } from 'src/utils/encodeBase64';
-import { authThunks } from 'src/services/slices/authSlice';
+import { authThunks } from 'src/services/api/auth/authSlice';
 import { useDispatch } from 'src/services/hooks';
 
 export const UserAvatarUpload = (): JSX.Element => {

@@ -1,12 +1,12 @@
-import { request } from './apiRequest';
+import { request } from '../apiRequest';
+import { URLS } from '../types';
 import {
   LoginRequestData,
   RegisterRequestData,
-  UpdatePasswordData,
   TokenType,
-  URLS,
+  UpdatePasswordData,
   UserType,
-} from './types';
+} from './authTypes';
 
 export const authAPI = {
   register: (data: RegisterRequestData): Promise<RegisterRequestData> => {

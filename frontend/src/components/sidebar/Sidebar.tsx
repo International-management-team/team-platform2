@@ -3,23 +3,30 @@ import { ReactComponent as SignPlus } from 'assets/sidebar-plus.svg';
 import { Account } from '../account/Account';
 import { Projects } from '../projects/Projects';
 import { useDispatch, useSelector } from 'src/services/hooks';
-import { selectUserMe } from 'src/services/slices/authSlice';
+import { selectUserMe } from 'src/services/api/auth/authSlice';
 import {
   addProject,
   selectProjects,
-  setCurrent,
-} from 'src/services/slices/projectSlice';
+} from 'src/services/api/project/projectSlice';
 
 export const Sidebar = (): JSX.Element => {
   const userMe = useSelector(selectUserMe);
-  const projectList = useSelector(selectProjects);
+  const projects = useSelector(selectProjects);
   const dispatch = useDispatch();
 
   const createNewProject = () => {
-    const count = projectList.length;
-
-    dispatch(addProject());
-    dispatch(setCurrent(count + 1));
+    dispatch(
+      addProject({
+        name: 'Без названия ' + projects?.length, //подумать как создавать нумерацию
+        description: 'Описание проекта',
+        status: 'Onboarding',
+        priority: 'maximum',
+        deadline: '2022-05-01', //надо реализовать автоматическое создание даты
+        participants: [],
+        tasks: [],
+        start: '2022-05-01', //надо реализовать автоматическое создание даты
+      }),
+    );
   };
 
   return (

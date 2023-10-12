@@ -13,7 +13,7 @@ import { errorTexts, helperTexts } from 'src/utils/validation/helperTexts';
 import { patterns } from 'src/utils/validation/patterns';
 import promo from '../../assets/Promo.png';
 import { useDispatch, useSelector } from 'src/services/hooks';
-import { authThunks, selectUserMe } from 'src/services/slices/authSlice';
+import { authThunks, selectUserMe } from 'src/services/api/auth/authSlice';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();

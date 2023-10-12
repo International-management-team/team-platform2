@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'src/services/hooks';
-import { updateColumns } from 'src/services/slices/projectSlice';
+import { updateColumns } from 'src/services/api/project/projectSlice';
 import type { TaskType, ColumnType } from 'src/services/api/types';
 
 export type dragTaskType = {
@@ -92,7 +92,7 @@ export const useDragDropKanban = (columnItems: ColumnType[]): DradDropType => {
         componentRedraw();
       }
 
-      dispatch(updateColumns(columns));
+      // dispatch(updateColumns(columns)); //!сейчас такого метода нет
     },
   };
 
@@ -121,7 +121,7 @@ export const useDragDropKanban = (columnItems: ColumnType[]): DradDropType => {
         componentRedraw();
       }
 
-      dispatch(updateColumns(columns));
+      // dispatch(updateColumns(columns));
     },
   };
 

@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import styles from './Teammate.module.scss';
 import { ReactComponent as DeleteIcon } from 'assets/icon-delete.svg';
 
 export type TTeammate = {
-  id: string;
+  id: number;
   name: string;
-  jobTitle: string;
-  email: string;
-  phone: string;
+  jobTitle?: string;
+  email?: string;
+  phone?: string;
   avatar?: string;
   time?: string;
+  isCurUser?: boolean;
   isAllChecked?: boolean;
   checked?: boolean;
 };
@@ -23,6 +24,7 @@ export const Teammate = ({
   avatar,
   time,
   id,
+  isCurUser,
   isAllChecked,
   checked,
 }: TTeammate): JSX.Element => {
@@ -53,7 +55,15 @@ export const Teammate = ({
             styles['teammate__info-item'],
           )}
         >
-          <div className={styles.text_prime}>{name}</div>
+          <div className={styles.text_prime}>
+            {name}
+            <span
+              className={clsx(styles.text_secondary, !isCurUser && styles.hide)}
+            >
+              {' '}
+              (Вы)
+            </span>
+          </div>
           <div className={styles.text_ordinary}>{jobTitle}</div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { LoginPage } from 'src/pages/LoginPage/LoginPage';
 import { ProfilePage } from 'src/pages/ProfilePage/ProfilePage';
 import { SignUpPage } from 'pages/SignUpPage/SignUpPage';
 import { useDispatch, useSelector } from 'src/services/hooks';
-import { authThunks, selectUserMe } from 'src/services/slices/authSlice';
+import { authThunks, selectUserMe } from 'src/services/api/auth/authSlice';
 import { KanbanPage } from 'pages/KanbanPage/KanbanPage';
 import { TeamPage } from 'src/pages/TeamPage/TeamPage';
 import { Sidebar } from '../sidebar/Sidebar';

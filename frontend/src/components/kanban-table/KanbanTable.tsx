@@ -2,24 +2,41 @@ import styles from './KanbanTable.module.scss';
 import clsx from 'clsx';
 import { KanbanColumn } from '../kanban-column/KanbanColumn';
 import { useDragDropKanban } from '../../hooks/useDragDropKanban';
-import type { ColumnType } from 'src/services/api/types';
+import { useMemo } from 'react';
+import { mockEmptyColumn } from 'src/utils/constants temporary/constant_temp';
+import {
+  ColumnType,
+  TaskType,
+  statusMapper,
+} from 'src/services/api/task/taskTypes';
 
 type KanbanTableProps = {
-  columns: ColumnType[];
+  tasks: TaskType[];
 };
 
-export const KanbanTable = (props: KanbanTableProps) => {
+export const KanbanTable = ({ tasks }: KanbanTableProps) => {
+  const isEmptyTable = tasks.length < 1;
+
+  const taskColumns: ColumnType[] = useMemo(() => {
+    if (isEmptyTable) return mockEmptyColumn;
+
+    return tasks.reduce((tableColumns: ColumnType[], curTask: TaskType) => {
+      for (const column of tableColumns) {
+        if (curTask.status === statusMapper[column.title]) {
+          column.tasks.push(curTask);
+        }
+      }
+      return tableColumns;
+    }, structuredClone(mockEmptyColumn));
+  }, [tasks, isEmptyTable]);
+
   const {
     columns,
     currentTask,
     hover,
     dragTaskHandler,
     dragOverColumnHandler,
-  } = useDragDropKanban(props.columns);
-
-  const isEmptyTable = () => {
-    return columns.every((column) => column.tasks.length < 1);
-  };
+  } = useDragDropKanban(taskColumns);
 
   return (
     <ul
@@ -40,7 +57,7 @@ export const KanbanTable = (props: KanbanTableProps) => {
               currentTask={currentTask}
               dragTaskHandler={dragTaskHandler}
               hover={hover}
-              isEmptyTable={isEmptyTable()}
+              isEmptyTable={isEmptyTable}
             />
           </li>
         );
