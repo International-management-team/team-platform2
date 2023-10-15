@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from 'src/services/hooks';
 import { closePopup } from 'src/services/slices/popupSlice';
 import { closeSidebar } from 'src/services/slices/sidebarSlice';
+import { ProjectType } from 'src/services/api/project/projectTypes';
 
 export const Projects = (): JSX.Element => {
   const projects = useSelector(selectProjects);
@@ -21,7 +22,7 @@ export const Projects = (): JSX.Element => {
   useEffect(() => {
     dispatch(getAllProjects()).then(({ payload: projects }) => {
       if (projects instanceof Array && projects.length > 0) {
-        dispatch(getProject(projects[0].id));
+        dispatch(getProject((projects[0] as ProjectType).id));
       }
     });
   }, [dispatch]);

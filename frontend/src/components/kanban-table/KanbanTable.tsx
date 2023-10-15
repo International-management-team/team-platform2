@@ -7,7 +7,7 @@ import { mockEmptyColumn } from 'src/utils/constants temporary/constant_temp';
 import {
   ColumnType,
   TaskType,
-  statusMapper,
+  taskStatusMapper,
 } from 'src/services/api/task/taskTypes';
 
 type KanbanTableProps = {
@@ -22,7 +22,7 @@ export const KanbanTable = ({ tasks }: KanbanTableProps) => {
 
     return tasks.reduce((tableColumns: ColumnType[], curTask: TaskType) => {
       for (const column of tableColumns) {
-        if (curTask.status === statusMapper[column.title]) {
+        if (curTask.status === taskStatusMapper[column.title]) {
           column.tasks.push(curTask);
         }
       }

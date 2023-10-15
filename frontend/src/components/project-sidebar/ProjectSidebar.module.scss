@@ -15,15 +15,8 @@
   }
 
   &__select {
-    @extend %flex-row;
-
-    position: relative;
-
-    align-items: center;
-    justify-content: space-between;
-
-    width: 263px;
-    height: 28px;
+    display: grid;
+    grid-template: 1fr / 116px auto;
 
     &_title {
       @include set-font-size(16px, 20px, 600);

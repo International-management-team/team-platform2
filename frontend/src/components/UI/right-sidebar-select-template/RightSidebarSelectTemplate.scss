@@ -14,6 +14,8 @@
   }
 
   &__control {
+    cursor: pointer !important;
+
     min-width: 104px;
     min-height: 28px $i;
     padding: 0 8px;
