@@ -65,7 +65,7 @@ export const authThunks = {
 
   userMe: createAsyncThunk('auth/userMe', async () => await authAPI.getMe()),
 
-  patchMe: createAsyncThunk('auth/patchMe', async (data: UserType) => {
+  patchMe: createAsyncThunk('auth/patchMe', async (data: Partial<UserType>) => {
     const patchedMe = await authAPI.patchMe(data);
     return patchedMe;
   }),
