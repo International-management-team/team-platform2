@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { projectAPI } from './projectAPI';
 import { ProjectRequestData, ProjectType } from './projectTypes';
+import { getAllTasks } from '../task/taskSlice';
 
 // Types
 
@@ -33,10 +34,14 @@ export const projectThunks = {
     },
   ),
 
-  getProject: createAsyncThunk('project/get', async (id: number) => {
-    const project = await projectAPI.getProject(id);
-    return project;
-  }),
+  getProject: createAsyncThunk(
+    'project/get',
+    async (id: number, { dispatch }) => {
+      const project = await projectAPI.getProject(id);
+      dispatch(getAllTasks(id));
+      return project;
+    },
+  ),
 
   getAllProjects: createAsyncThunk('project/getAll', async () => {
     const projects = await projectAPI.getAllProjects();

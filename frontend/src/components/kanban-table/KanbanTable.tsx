@@ -22,7 +22,12 @@ export const KanbanTable = ({ tasks }: KanbanTableProps) => {
 
     return tasks.reduce((tableColumns: ColumnType[], curTask: TaskType) => {
       for (const column of tableColumns) {
-        if (curTask.status === statusMapper[column.title]) {
+        //при создании задачи возвращается задача со статусом в виде Backlog (пример)
+        //при получении списка задач статус будет backlog...
+        if (
+          curTask.status === statusMapper[column.title] ||
+          curTask.status === column.title
+        ) {
           column.tasks.push(curTask);
         }
       }

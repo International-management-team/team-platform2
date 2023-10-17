@@ -10,3 +10,8 @@ export const getRouteMemberAdd = (projectId: number) =>
   `${URLS.PROJECTS}${projectId}/add_member/`;
 export const getRouteMembers = (projectId: number) =>
   `${URLS.PROJECTS}${projectId}/team/`;
+
+export const getRouteTasks = (projectId: number) =>
+  `${URLS.PROJECTS}${projectId}/tasks/`;
+export const getRouteTask = (projectId: number, taskId: number) =>
+  `${URLS.PROJECTS}${projectId}/tasks/${taskId}/`;
