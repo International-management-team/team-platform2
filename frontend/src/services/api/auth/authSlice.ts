@@ -2,8 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { authAPI } from 'src/services/api/auth/authAPI';
 import type { RootState } from 'services/store';
-import { addProject } from '../project/projectSlice';
-import { mockProjectExample } from 'src/utils/constants temporary/constant_temp';
+
 import {
   LoginRequestData,
   RegisterRequestData,
@@ -49,7 +48,6 @@ export const authThunks = {
           password: userData.password,
         }),
       );
-      dispatch(addProject(mockProjectExample)); //можно реализовать это сразу через БД
     },
   ),
 
