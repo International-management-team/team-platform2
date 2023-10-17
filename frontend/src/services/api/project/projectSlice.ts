@@ -47,6 +47,14 @@ export const projectThunks = {
     const projects = await projectAPI.getAllProjects();
     return projects;
   }),
+
+  patchProject: createAsyncThunk(
+    'project/patch',
+    async (data: { projectData: Partial<ProjectType>; projectId: number }) => {
+      const patchedProject = await projectAPI.patchProject(data);
+      return patchedProject;
+    },
+  ),
 };
 
 export const projectSlice = createSlice({
@@ -118,6 +126,26 @@ export const projectSlice = createSlice({
           state.error = action.payload;
           state.allProjects = [];
         },
+      )
+      // patch Project
+      .addCase(projectThunks.patchProject.pending, (state) => {
+        state.isLoading = true;
+        state.error = false;
+      })
+      .addCase(
+        projectThunks.patchProject.fulfilled,
+        (state, action: PayloadAction<ProjectType>) => {
+          state.isLoading = false;
+          state.error = false;
+          state.curProject = action.payload;
+        },
+      )
+      .addCase(
+        projectThunks.patchProject.rejected,
+        (state, action: PayloadAction<unknown>) => {
+          state.isLoading = false;
+          state.error = action.payload;
+        },
       );
   },
 });
@@ -129,4 +157,5 @@ export const selectProjectIsLoading = (state: RootState) =>
   state.projects.isLoading;
 export const selectProjectError = (state: RootState) => state.projects.error;
 
-export const { getAllProjects, getProject, addProject } = projectThunks;
+export const { getAllProjects, getProject, addProject, patchProject } =
+  projectThunks;

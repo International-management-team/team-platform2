@@ -10,8 +10,11 @@ import { useForm } from 'react-hook-form';
 import { SingleValue } from 'react-select';
 import { InputName } from 'src/typings/constants';
 import { Calendar } from '../UI/calendar/Calendar';
-import { useSelector } from 'src/services/hooks';
-import { selectCurrentProject } from 'src/services/api/project/projectSlice';
+import { useDispatch, useSelector } from 'src/services/hooks';
+import {
+  patchProject,
+  selectCurrentProject,
+} from 'src/services/api/project/projectSlice';
 import {
   projectPriorityMapper,
   projectStatusMapper,
@@ -22,6 +25,7 @@ import { selectMembers } from 'src/services/api/team/teamSlice';
 export const ProjectSidebar = (): JSX.Element => {
   const project = useSelector(selectCurrentProject);
   const members = useSelector(selectMembers);
+  const dispatch = useDispatch();
 
   const showActions = () => {
     console.log('showProjectActions');
@@ -63,7 +67,15 @@ export const ProjectSidebar = (): JSX.Element => {
     choice: SingleValue<OptionType>,
     fieldName: string | undefined,
   ) => {
-    console.log(choice, fieldName);
+    const projectField = fieldName?.replace('project_', '');
+    project &&
+      projectField &&
+      dispatch(
+        patchProject({
+          projectData: { [projectField]: choice?.value },
+          projectId: project.id,
+        }),
+      );
   };
 
   return (
