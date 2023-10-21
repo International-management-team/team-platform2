@@ -51,14 +51,17 @@ export const Calendar: React.FC<CalendarProps> = (props: CalendarProps) => {
   };
 
   return (
-    <>
+    <div className={styles.calendar__container}>
       <div
         className={clsx(styles.calendar__field, {
           [styles.calendar__field_active]: isOpen === true,
         })}
       >
         <div className={styles.calendar__data}>{title}</div>
-        <CalendarIcon onClick={() => togglePopap()} />
+        <CalendarIcon
+          className={styles.calendar__icon}
+          onClick={() => togglePopap()}
+        />
       </div>
 
       {isOpen && (
@@ -85,6 +88,6 @@ export const Calendar: React.FC<CalendarProps> = (props: CalendarProps) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };

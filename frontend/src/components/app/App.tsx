@@ -16,6 +16,7 @@ import {
   HeaderState,
   selectHeaderState,
 } from 'src/services/slices/headerSlice';
+import { ProjectSidebar } from '../project-sidebar/ProjectSidebar';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ export const App: React.FC = () => {
         <>
           <Sidebar />
           <HeaderTemplate />
+          <ProjectSidebar />
         </>
       )}
       <Routes>

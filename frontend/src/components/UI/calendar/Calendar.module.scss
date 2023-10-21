@@ -6,8 +6,8 @@
 
   position: absolute;
   z-index: 10;
-  top: 35px;
-  left: 95px;
+  top: 36px;
+  left: -24px;
 
   justify-content: space-between;
 
@@ -17,6 +17,10 @@
   background-color: $white;
   border-radius: $ui-border-radius;
   box-shadow: 0 5px 50px 5px $blue-0;
+
+  &__container {
+    position: relative;
+  }
 
   &__field {
     @extend %flex-row;
@@ -42,6 +46,10 @@
     width: 107px;
     color: $black;
     letter-spacing: -0.01rem;
+  }
+
+  &__icon {
+    cursor: pointer;
   }
 
   &__buttons {

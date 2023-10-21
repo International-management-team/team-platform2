@@ -1,8 +1,5 @@
 import styles from './ProjectSidebar.module.scss';
-import {
-  RightSidebarTemplate,
-  RightSidebarPropsType,
-} from '../UI/right-sidebar-template/RightSidebarTemplate';
+import { RightSidebarTemplate } from '../UI/right-sidebar-template/RightSidebarTemplate';
 import { RightSidebarTitleInputTemplate as InputTitle } from '../UI/right-sidebar-title-input-template/RightSidebarTitleInputTemplate';
 import {
   OptionType,
@@ -13,26 +10,45 @@ import { useForm } from 'react-hook-form';
 import { SingleValue } from 'react-select';
 import { InputName } from 'src/typings/constants';
 import { Calendar } from '../UI/calendar/Calendar';
+import { useDispatch, useSelector } from 'src/services/hooks';
+import {
+  patchProject,
+  selectCurrentProject,
+} from 'src/services/api/project/projectSlice';
+import {
+  projectPriorityMapper,
+  projectStatusMapper,
+} from 'src/services/api/project/projectTypes';
+import { UserAvatar } from '../UI/user-avatar-template/UserAvatarTemplate';
+import { selectMembers } from 'src/services/api/team/teamSlice';
 
-export const ProjectSidebar = ({
-  showActions,
-  project,
-}: RightSidebarPropsType): JSX.Element => {
-  // until there is redux
-  const PRIORITY_OPTIONS = [
-    { value: 'High', label: 'High' },
-    { value: 'Mwdium', label: 'Medium' },
-    { value: 'Low', label: 'Low' },
-  ];
-  // until there is redux
-  const STATUS_OPTIONS = [
-    { value: 'Done', label: 'Done' },
-    { value: 'In progress', label: 'In progress' },
-    { value: 'To do', label: 'To do' },
-  ];
+export const ProjectSidebar = (): JSX.Element => {
+  const project = useSelector(selectCurrentProject);
+  const members = useSelector(selectMembers);
+  const dispatch = useDispatch();
+
+  const showActions = () => {
+    console.log('showProjectActions');
+  };
+
+  const PRIORITY_OPTIONS = Object.entries(projectPriorityMapper).map(
+    (priority) => {
+      return {
+        value: priority[0],
+        label: priority[1],
+      };
+    },
+  );
+
+  const STATUS_OPTIONS = Object.keys(projectStatusMapper).map((status) => {
+    return {
+      value: status,
+      label: status,
+    };
+  });
 
   const { register } = useForm({
-    defaultValues: {
+    values: {
       // it works for inputs/textareas, not for selects
       [InputName.PROJECT_TITLE]: project?.name,
       [InputName.PROJECT_DESCRIPTION]: project?.description,
@@ -51,58 +67,72 @@ export const ProjectSidebar = ({
     choice: SingleValue<OptionType>,
     fieldName: string | undefined,
   ) => {
-    console.log(choice, fieldName);
+    const projectField = fieldName?.replace('project_', '');
+    project &&
+      projectField &&
+      dispatch(
+        patchProject({
+          projectData: { [projectField]: choice?.value },
+          projectId: project.id,
+        }),
+      );
   };
 
   return (
     <RightSidebarTemplate showActions={showActions}>
-      <form className={styles.form}>
-        <InputTitle
-          name={InputName.PROJECT_TITLE}
-          register={register}
-          onChange={handleChange}
-          onBlur={handleInputSubmit}
-        />
+      {project && members ? (
+        <form className={styles.form}>
+          <InputTitle
+            name={InputName.PROJECT_TITLE}
+            register={register}
+            onChange={handleChange}
+            onBlur={handleInputSubmit}
+          />
 
-        <Select
-          name={InputName.PROJECT_PRIORITY}
-          label={'Приоритет'}
-          options={PRIORITY_OPTIONS}
-          value={null}
-          handleChange={handleSelectSubmit}
-        />
+          <Select
+            name={InputName.PROJECT_PRIORITY}
+            label={'Приоритет'}
+            options={PRIORITY_OPTIONS}
+            value={{
+              value: project.priority,
+              label: projectPriorityMapper[project.priority],
+            }}
+            handleChange={handleSelectSubmit}
+          />
 
-        <Select
-          name={InputName.PROJECT_STATUS}
-          label={'Статус'}
-          options={STATUS_OPTIONS}
-          value={null}
-          handleChange={handleSelectSubmit}
-        />
+          <Select
+            name={InputName.PROJECT_STATUS}
+            label={'Статус'}
+            options={STATUS_OPTIONS}
+            value={{ value: project.status, label: project.status }}
+            handleChange={handleSelectSubmit}
+          />
 
-        <label className={styles.form__select}>
-          <span className={styles.form__select_title}>Дедлайн</span>
-          <Calendar onChange={(date) => console.log(date)} />
-        </label>
+          <label className={styles.form__select}>
+            <span className={styles.form__select_title}>Дедлайн</span>
+            <Calendar
+              initialValue={new Date(project.deadline)}
+              onChange={(date) => console.log(date)}
+            />
+          </label>
 
-        {/* replace it with Teammates */}
-        <Select
-          name={''}
-          label={'Участники (заглушка)'}
-          options={[]}
-          value={null}
-          handleChange={handleSelectSubmit}
-        />
+          <label className={styles.form__select}>
+            <span className={styles.form__select_title}>Участники</span>
+            <UserAvatar users={members} />
+          </label>
 
-        <Description
-          name={InputName.PROJECT_DESCRIPTION}
-          label={'Описание проекта'}
-          placeholder={'Напишите подробнее о задаче.'}
-          register={register}
-          onChange={handleChange}
-          onBlur={handleInputSubmit}
-        />
-      </form>
+          <Description
+            name={InputName.PROJECT_DESCRIPTION}
+            label={'Описание проекта'}
+            placeholder={'Напишите подробнее о задаче.'}
+            register={register}
+            onChange={handleChange}
+            onBlur={handleInputSubmit}
+          />
+        </form>
+      ) : (
+        <></>
+      )}
     </RightSidebarTemplate>
   );
 };

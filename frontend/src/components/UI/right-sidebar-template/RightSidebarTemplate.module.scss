@@ -1,11 +1,24 @@
 @import 'styles/colors';
 @import 'styles/constants';
 
-.sidebar {
-  @extend %smooth-visibility-hidden;
+.sidebarContainer {
+  position: absolute;
+  z-index: 105;
+  top: 0;
+  left: 0;
 
+  display: none;
+
+  width: 100vw;
+  height: 100vh;
+
+  &_opened {
+    display: block;
+  }
+}
+
+.sidebar {
   position: fixed;
-  z-index: 100;
   top: 0;
   right: 0;
 
@@ -15,10 +28,6 @@
 
   background-color: $white;
   box-shadow: -5px 0 50px 0 $black-op15;
-
-  &_opened {
-    @extend %smooth-visibility-visible;
-  }
 
   &__close-btn {
     @extend %transition-initial;

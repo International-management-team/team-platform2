@@ -7,7 +7,7 @@ import { mockEmptyColumn } from 'src/utils/constants temporary/constant_temp';
 import {
   ColumnType,
   TaskType,
-  statusMapper,
+  taskStatusMapper,
 } from 'src/services/api/task/taskTypes';
 
 type KanbanTableProps = {
@@ -25,7 +25,7 @@ export const KanbanTable = ({ tasks }: KanbanTableProps) => {
         //при создании задачи возвращается задача со статусом в виде Backlog (пример)
         //при получении списка задач статус будет backlog...
         if (
-          curTask.status === statusMapper[column.title] ||
+          curTask.status === taskStatusMapper[column.title] ||
           curTask.status === column.title
         ) {
           column.tasks.push(curTask);

@@ -6,8 +6,6 @@ import settingsIcon from 'src/assets/header-icons/header-settings-icon.svg';
 import { ReactComponent as KanbanIcon } from 'src/assets/header-icons/header-kanban-icon.svg';
 import { ReactComponent as ListIcon } from 'src/assets/header-icons/header-list-icon.svg';
 import { UserAvatar } from 'src/components/UI/user-avatar-template/UserAvatarTemplate';
-import userAvatar from 'src/assets/user-avatar.svg';
-import addNewParticipant from 'src/assets/add-new-participant.svg';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'src/services/hooks';
 import {
@@ -29,15 +27,12 @@ import { PopupTemplate } from '../popup/Popup';
 import { closePopup, openPopup } from 'src/services/slices/popupSlice';
 import { openSidebar } from 'src/services/slices/sidebarSlice';
 import { useLocation } from 'react-router-dom';
-
-const users = [
-  { name: 'User 1', src: userAvatar },
-  { name: 'User 2', src: addNewParticipant },
-];
+import { selectMembers } from 'src/services/api/team/teamSlice';
 
 export const HeaderTemplate = (): JSX.Element => {
   const isAuthApiLoading = useSelector(selectAuthIsLoading);
   const isAuthApiError = useSelector(selectAuthError);
+  const members = useSelector(selectMembers);
   const [profileInfo, setProfileInfo] = useState<string>('');
   const { isOpen } = useSelector((store) => store.popup);
   const dispatch = useDispatch();
@@ -184,7 +179,7 @@ export const HeaderTemplate = (): JSX.Element => {
               to={`/${currentProject?.id}/team`}
               id={VIEWS.TEAM}
             >
-              <UserAvatar users={users} />
+              <UserAvatar users={members} />
             </NavLink>
           </div>
         </div>

@@ -14,16 +14,16 @@ import styles from './ProfileForm.module.scss';
 import { useForm } from 'react-hook-form';
 import { patterns } from 'src/utils/validation/patterns';
 import { DevTool } from '@hookform/devtools';
-import {
-  // RegisterRequestData,
-  ProfileRequestData,
-  UpdatePasswordData,
-} from 'src/services/api/types';
+
 import { SingleValue } from 'react-select';
 import { ITimezoneOption } from 'react-timezone-select';
 import { useDispatch, useSelector } from 'src/services/hooks';
 import { authThunks, selectUserMe } from 'src/services/api/auth/authSlice';
 import { UserAvatarUpload } from '../UI/user-avatar-upload/UserAvatarUpload';
+import {
+  ProfileRequestData,
+  UpdatePasswordData,
+} from 'src/services/api/auth/authTypes';
 
 export const ProfileForm: React.FC = () => {
   const dispatch = useDispatch();

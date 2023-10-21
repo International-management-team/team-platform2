@@ -1,7 +1,7 @@
 import styles from '../kanban-table/KanbanTable.module.scss';
 import { ReactComponent as MoreActions } from 'assets/more-actions.svg';
 import clsx from 'clsx';
-import type { TaskType } from 'src/services/api/types';
+import { TaskType } from 'src/services/api/task/taskTypes';
 import { formatDate } from 'src/utils/formatting';
 
 type PropsType = {

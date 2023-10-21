@@ -2,11 +2,8 @@
 @import 'styles/constants';
 
 .select {
-  @extend %flex-row;
-
-  align-items: center;
-  justify-content: space-between;
-  width: 220px;
+  display: grid;
+  grid-template: 1fr / 116px 120px;
 
   &__label {
     @include set-font-size(16px, 20px, 600);
