@@ -1,13 +1,14 @@
 import { KanbanTable } from 'src/components/kanban-table/KanbanTable';
 import { useSelector } from 'src/services/hooks';
-import { selectCurrentProject } from 'src/services/api/project/projectSlice';
+
+import { selectTasks } from 'src/services/api/task/taskSlice';
 
 export const KanbanPage = (): JSX.Element => {
-  const currentProject = useSelector(selectCurrentProject);
+  const tasks = useSelector(selectTasks);
 
   return (
     <section className="content">
-      {currentProject && <KanbanTable tasks={currentProject.tasks} />}
+      <KanbanTable tasks={tasks} />
     </section>
   );
 };

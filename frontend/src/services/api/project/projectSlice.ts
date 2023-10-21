@@ -3,6 +3,7 @@ import { RootState } from '../../store';
 import { projectAPI } from './projectAPI';
 import { ProjectRequestData, ProjectType } from './projectTypes';
 import { getMembers } from '../team/teamSlice';
+import { getAllTasks } from '../task/taskSlice';
 
 // Types
 
@@ -39,6 +40,7 @@ export const projectThunks = {
     async (id: number, { dispatch }) => {
       const project = await projectAPI.getProject(id);
       dispatch(getMembers(id));
+      dispatch(getAllTasks(id));
       return project;
     },
   ),

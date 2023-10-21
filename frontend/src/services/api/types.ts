@@ -15,3 +15,9 @@ export const getRouteMemberAdd = (projectId: number) =>
 
 export const getRouteMembers = (projectId: number) =>
   getRouteProject(projectId) + 'team/';
+
+export const getRouteTasks = (projectId: number) =>
+  getRouteProject(projectId) + 'tasks/';
+
+export const getRouteTask = (projectId: number, taskId: number) =>
+  getRouteTasks(projectId) + `${taskId}/`;
