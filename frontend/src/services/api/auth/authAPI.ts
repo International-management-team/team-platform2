@@ -24,8 +24,8 @@ export const authAPI = {
     return request.get<UserType>(URLS.USER_ME);
   },
 
-  patchMe: async (data: UserType): Promise<UserType> => {
-    return request.patch<UserType, UserType>(URLS.USER_ME, data);
+  patchMe: async (data: Partial<UserType>): Promise<UserType> => {
+    return request.patch<UserType, Partial<UserType>>(URLS.USER_ME, data);
   },
 
   setPassword: async (

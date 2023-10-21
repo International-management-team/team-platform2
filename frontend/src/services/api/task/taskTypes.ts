@@ -26,8 +26,8 @@ export type TaskStatus =
   | 'In Review'
   | 'Done';
 
-type StatusMapper = Record<TaskStatus, string>;
-export const statusMapper: StatusMapper = {
+type TaskStatusMapper = Record<TaskStatus, string>;
+export const taskStatusMapper: TaskStatusMapper = {
   Backlog: 'backlog',
   Done: 'done',
   'In Progress': 'in_progress',

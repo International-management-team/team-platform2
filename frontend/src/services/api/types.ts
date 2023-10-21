@@ -6,7 +6,12 @@ export enum URLS {
   SET_PASSWORD = `${URLS.AUTH}/users/set_password/`,
   PROJECTS = 'projects/',
 }
+
+export const getRouteProject = (projectId: number) =>
+  `${URLS.PROJECTS}${projectId}/`;
+
 export const getRouteMemberAdd = (projectId: number) =>
-  `${URLS.PROJECTS}${projectId}/add_member/`;
+  getRouteProject(projectId) + 'add_member/';
+
 export const getRouteMembers = (projectId: number) =>
-  `${URLS.PROJECTS}${projectId}/team/`;
+  getRouteProject(projectId) + 'team/';
