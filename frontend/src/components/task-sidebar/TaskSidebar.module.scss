@@ -1,0 +1,28 @@
+@import 'styles/colors';
+@import 'styles/constants';
+
+.form {
+  @extend %flex-column;
+
+  row-gap: 16px;
+
+  > *:first-child {
+    margin: 6px 0 0;
+  }
+
+  > *:last-child {
+    margin: 16px 0 0;
+  }
+
+  &__select {
+    display: grid;
+    grid-template: 1fr / 116px auto;
+
+    &_title {
+      @include set-font-size(16px, 20px, 600);
+
+      padding: 6px 0 0;
+      color: $grey-118;
+    }
+  }
+}

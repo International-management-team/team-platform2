@@ -25,4 +25,8 @@ export enum InputName {
   PROJECT_PRIORITY = 'project_priority',
   PROJECT_STATUS = 'project_status',
   PROJECT_DESCRIPTION = 'project_description',
+  TASK_TITLE = 'task_title',
+  TASK_PRIORITY = 'task_priority',
+  TASK_STATUS = 'task_status',
+  TASK_DESCRIPTION = 'task_description',
 }
