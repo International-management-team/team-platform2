@@ -4,7 +4,7 @@ export type TaskType = {
   id: number;
   name: string;
   deadline: string;
-  priority: string;
+  priority: TaskPriority;
   status: string;
   description: string;
   assigned_to: UserType[];
@@ -39,4 +39,13 @@ export type ColumnType = {
   id: number;
   title: TaskStatus;
   tasks: TaskType[];
+};
+
+export type TaskPriority = 'maximum' | 'average' | 'minimum';
+
+type TaskPriorityMapper = Record<TaskPriority, string>;
+export const taskPriorityMapper: TaskPriorityMapper = {
+  maximum: 'Высокий',
+  average: 'Средний',
+  minimum: 'Низкий',
 };

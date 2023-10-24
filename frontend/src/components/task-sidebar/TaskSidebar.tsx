@@ -1,5 +1,4 @@
 import styles from './TaskSidebar.module.scss';
-import { RightSidebarTemplate } from '../UI/right-sidebar-template/RightSidebarTemplate';
 import { RightSidebarTitleInputTemplate as InputTitle } from '../UI/right-sidebar-title-input-template/RightSidebarTitleInputTemplate';
 import {
   OptionType,
@@ -10,18 +9,18 @@ import { useForm } from 'react-hook-form';
 import { SingleValue } from 'react-select';
 import { InputName } from 'src/typings/constants';
 import { Calendar } from '../UI/calendar/Calendar';
-import {
-  projectPriorityMapper,
-  projectStatusMapper,
-} from 'src/services/api/project/projectTypes';
 import { UserAvatar } from '../UI/user-avatar-template/UserAvatarTemplate';
+import {
+  taskPriorityMapper,
+  taskStatusMapper,
+} from 'src/services/api/task/taskTypes';
+import { useSelector } from 'src/services/hooks';
+import { selectCurrentTask } from 'src/services/api/task/taskSlice';
 
 export const TaskSidebar = (): JSX.Element => {
-  const showActions = () => {
-    console.log('showTaskActions');
-  };
+  const task = useSelector(selectCurrentTask);
 
-  const PRIORITY_OPTIONS = Object.entries(projectPriorityMapper).map(
+  const PRIORITY_OPTIONS = Object.entries(taskPriorityMapper).map(
     (priority) => {
       return {
         value: priority[0],
@@ -30,7 +29,7 @@ export const TaskSidebar = (): JSX.Element => {
     },
   );
 
-  const STATUS_OPTIONS = Object.keys(projectStatusMapper).map((status) => {
+  const STATUS_OPTIONS = Object.keys(taskStatusMapper).map((status) => {
     return {
       value: status,
       label: status,
@@ -38,11 +37,11 @@ export const TaskSidebar = (): JSX.Element => {
   });
 
   const { register } = useForm({
-    // values: {
-    //    // it works for inputs/textareas, not for selects
-    //    // [InputName.TASK_TITLE]: project?.name,
-    //    // [InputName.TASK_DESCRIPTION]: project?.description,
-    // },
+    values: {
+      // it works for inputs/textareas, not for selects
+      [InputName.TASK_TITLE]: task?.name,
+      [InputName.TASK_DESCRIPTION]: task?.description,
+    },
   });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -61,7 +60,7 @@ export const TaskSidebar = (): JSX.Element => {
   };
 
   return (
-    <RightSidebarTemplate showActions={showActions}>
+    <>
       {
         <form className={styles.form}>
           <InputTitle
@@ -75,7 +74,12 @@ export const TaskSidebar = (): JSX.Element => {
             name={InputName.TASK_PRIORITY}
             label={'Приоритет'}
             options={PRIORITY_OPTIONS}
-            value={null}
+            value={
+              task && {
+                value: task.priority,
+                label: taskPriorityMapper[task.priority],
+              }
+            }
             handleChange={handleSelectSubmit}
           />
 
@@ -83,21 +87,21 @@ export const TaskSidebar = (): JSX.Element => {
             name={InputName.TASK_STATUS}
             label={'Статус'}
             options={STATUS_OPTIONS}
-            value={null}
+            value={task && { value: task.status, label: task.status }}
             handleChange={handleSelectSubmit}
           />
 
           <label className={styles.form__select}>
             <span className={styles.form__select_title}>Дедлайн</span>
             <Calendar
-              // initialValue={new Date(project.deadline)}
+              initialValue={task && new Date(task.deadline)}
               onChange={(date) => console.log(date)}
             />
           </label>
 
           <label className={styles.form__select}>
             <span className={styles.form__select_title}>Исполнители</span>
-            <UserAvatar users={[]} />
+            <UserAvatar users={task?.assigned_to || []} />
           </label>
 
           <Description
@@ -110,6 +114,6 @@ export const TaskSidebar = (): JSX.Element => {
           />
         </form>
       }
-    </RightSidebarTemplate>
+    </>
   );
 };

@@ -6,7 +6,7 @@ import { taskAPI } from './taskAPI';
 // Types
 
 type TaskStateType = {
-  curTask: null | TaskType | undefined;
+  curTask: TaskType | undefined;
   allTasks: TaskType[];
   isLoading: boolean;
   error: null | unknown | string;
@@ -73,7 +73,11 @@ export const taskThunks = {
 export const taskSlice = createSlice({
   name: 'tasks',
   initialState,
-  reducers: {},
+  reducers: {
+    resetCurTask: (state) => {
+      state.curTask = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // add task
@@ -94,14 +98,14 @@ export const taskSlice = createSlice({
         (state, action: PayloadAction<unknown>) => {
           state.isLoading = false;
           state.error = action.payload;
-          state.curTask = null;
+          state.curTask = undefined;
         },
       )
       // get task
       .addCase(taskThunks.getTask.pending, (state) => {
         state.isLoading = true;
         state.error = false;
-        state.curTask = null;
+        state.curTask = undefined;
       })
       .addCase(
         taskThunks.getTask.fulfilled,
@@ -116,7 +120,7 @@ export const taskSlice = createSlice({
         (state, action: PayloadAction<unknown>) => {
           state.isLoading = false;
           state.error = action.payload;
-          state.curTask = null;
+          state.curTask = undefined;
         },
       )
       // get all tasks
@@ -169,3 +173,4 @@ export const selectTaskIsLoading = (state: RootState) => state.tasks.isLoading;
 export const selectTaskError = (state: RootState) => state.tasks.error;
 
 export const { getAllTasks, getTask, addTask, patchTask } = taskThunks;
+export const { resetCurTask } = taskSlice.actions;

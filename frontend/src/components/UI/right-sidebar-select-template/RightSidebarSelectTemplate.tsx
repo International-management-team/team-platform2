@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './RightSidebarSelectTemplate.module.scss';
 import Select, { SingleValue, ActionMeta } from 'react-select';
 import './RightSidebarSelectTemplate.scss'; // <-- Управление стилями компонента Select, модульно пока не получилось (https://react-select.com/styles#inner-components)
@@ -26,6 +26,8 @@ export const RightSidebarSelectTemplate = ({
   handleChange,
 }: PropsType): JSX.Element => {
   const [choice, setChoice] = useState(value);
+
+  useEffect(() => setChoice(value), [value]);
 
   const handleSelection = (
     choice: SingleValue<OptionType>,

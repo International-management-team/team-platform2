@@ -1,5 +1,4 @@
 import styles from './ProjectSidebar.module.scss';
-import { RightSidebarTemplate } from '../UI/right-sidebar-template/RightSidebarTemplate';
 import { RightSidebarTitleInputTemplate as InputTitle } from '../UI/right-sidebar-title-input-template/RightSidebarTitleInputTemplate';
 import {
   OptionType,
@@ -26,10 +25,6 @@ export const ProjectSidebar = (): JSX.Element => {
   const project = useSelector(selectCurrentProject);
   const members = useSelector(selectMembers);
   const dispatch = useDispatch();
-
-  const showActions = () => {
-    console.log('showProjectActions');
-  };
 
   const PRIORITY_OPTIONS = Object.entries(projectPriorityMapper).map(
     (priority) => {
@@ -79,7 +74,7 @@ export const ProjectSidebar = (): JSX.Element => {
   };
 
   return (
-    <RightSidebarTemplate showActions={showActions}>
+    <>
       {project && members ? (
         <form className={styles.form}>
           <InputTitle
@@ -124,7 +119,7 @@ export const ProjectSidebar = (): JSX.Element => {
           <Description
             name={InputName.PROJECT_DESCRIPTION}
             label={'Описание проекта'}
-            placeholder={'Напишите подробнее о задаче.'}
+            placeholder={'Напишите подробнее о проекте.'}
             register={register}
             onChange={handleChange}
             onBlur={handleInputSubmit}
@@ -133,6 +128,6 @@ export const ProjectSidebar = (): JSX.Element => {
       ) : (
         <></>
       )}
-    </RightSidebarTemplate>
+    </>
   );
 };

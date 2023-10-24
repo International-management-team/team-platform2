@@ -25,7 +25,7 @@ import {
 } from 'src/services/slices/headerSlice';
 import { PopupTemplate } from '../popup/Popup';
 import { closePopup, openPopup } from 'src/services/slices/popupSlice';
-import { openSidebar } from 'src/services/slices/sidebarSlice';
+import { SidebarContent, openSidebar } from 'src/services/slices/sidebarSlice';
 import { useLocation } from 'react-router-dom';
 import { selectMembers } from 'src/services/api/team/teamSlice';
 
@@ -56,7 +56,7 @@ export const HeaderTemplate = (): JSX.Element => {
   };
 
   const handleOpenSidebar = () => {
-    dispatch(openSidebar());
+    dispatch(openSidebar(SidebarContent.PROJECT));
     dispatch(closePopup());
   };
 

@@ -72,6 +72,7 @@ export const Calendar: React.FC<CalendarProps> = (props: CalendarProps) => {
                 onChange={(newValue) => newValue && setValue(newValue.$d)}
                 openTo="month"
                 className={styles.calendar__content}
+                defaultValue={props.initialValue && { $d: props.initialValue }}
               />
             </LocalizationProvider>
           </StyledEngineProvider>
