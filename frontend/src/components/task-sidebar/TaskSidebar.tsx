@@ -94,7 +94,7 @@ export const TaskSidebar = (): JSX.Element => {
           <label className={styles.form__select}>
             <span className={styles.form__select_title}>Дедлайн</span>
             <Calendar
-              initialValue={task && new Date(task.deadline)}
+              initialValue={task?.deadline}
               onChange={(date) => console.log(date)}
             />
           </label>

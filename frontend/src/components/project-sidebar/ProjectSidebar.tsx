@@ -106,7 +106,7 @@ export const ProjectSidebar = (): JSX.Element => {
           <label className={styles.form__select}>
             <span className={styles.form__select_title}>Дедлайн</span>
             <Calendar
-              initialValue={new Date(project.deadline)}
+              initialValue={project.deadline}
               onChange={(date) => console.log(date)}
             />
           </label>

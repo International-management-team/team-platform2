@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Calendar.module.scss';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,39 +7,42 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import { ReactComponent as CalendarIcon } from 'assets/calendar.svg';
 import 'dayjs/locale/ru';
 import clsx from 'clsx';
-import moment from 'moment';
-import 'moment/dist/locale/ru';
 import './Calendar.scss';
 import { useDispatch, useSelector } from 'src/services/hooks';
 import { closePopup, openPopup } from 'src/services/slices/popupSlice';
-
-type DateCalendarValue = {
-  $d: Date;
-};
+import dayjs, { Dayjs } from 'dayjs';
 
 type CalendarProps = {
-  initialValue?: Date;
+  initialValue?: string;
   onChange: (date: Date) => void;
 };
 
 export const Calendar: React.FC<CalendarProps> = (props: CalendarProps) => {
   const dispatch = useDispatch();
   const { isOpen } = useSelector((store) => store.popup);
-  const [value, setValue] = React.useState<Date>(
-    props.initialValue || new Date(),
+  const [value, setValue] = React.useState<Dayjs>(
+    dayjs(props.initialValue) || dayjs(),
   );
   const [title, setTitle] = React.useState<string>(
-    props.initialValue ? formatDate(props.initialValue) : '',
+    props.initialValue ? formatDate(dayjs(props.initialValue)) : '',
   );
+
+  useEffect(() => {
+    if (props.initialValue) {
+      const initDay = dayjs(props.initialValue);
+      setValue(initDay);
+      setTitle(formatDate(initDay));
+    }
+  }, [props.initialValue]);
 
   const saveDate = () => {
     setTitle(formatDate(value));
     dispatch(closePopup());
-    props.onChange(value);
+    props.onChange(value as unknown as Date);
   };
 
-  function formatDate(date: Date): string {
-    return moment(date).locale('ru').format('LL').slice(0, -3);
+  function formatDate(date: Dayjs): string {
+    return dayjs(date).locale('ru').format('LL').slice(0, -3);
   }
 
   const togglePopap = () => {
@@ -68,11 +71,12 @@ export const Calendar: React.FC<CalendarProps> = (props: CalendarProps) => {
         <div className={styles.calendar}>
           <StyledEngineProvider injectFirst>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
-              <DateCalendar<DateCalendarValue>
-                onChange={(newValue) => newValue && setValue(newValue.$d)}
-                openTo="month"
+              <DateCalendar
+                onChange={(newValue) => newValue && setValue(newValue)}
+                views={['day', 'year', 'month']}
+                openTo="day"
                 className={styles.calendar__content}
-                defaultValue={props.initialValue && { $d: props.initialValue }}
+                value={value}
               />
             </LocalizationProvider>
           </StyledEngineProvider>
