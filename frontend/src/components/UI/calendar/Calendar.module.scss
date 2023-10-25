@@ -25,18 +25,29 @@
   &__field {
     @extend %flex-row;
 
+    @include set-font-size(14px, 16px, 600);
+
     justify-content: space-between;
 
-    width: 147px;
+    width: 160px;
     height: 28px;
     padding: 6px 8px;
+
+    font-family: 'Tilda Sans', sans-serif;
+    color: $black;
+    text-transform: none;
 
     background-color: $grey-241;
     border: 1px solid $grey-225;
     border-radius: $ui-border-radius-s;
+    box-shadow: none;
 
     &_active {
       background-color: $grey-191;
+    }
+
+    &:hover {
+      background-color: $grey-241;
     }
   }
 
@@ -50,14 +61,21 @@
 
   &__icon {
     cursor: pointer;
+    min-width: auto;
+    padding: 0;
   }
 
   &__buttons {
     @extend %flex-row;
 
+    grid-column: 2;
+    grid-row: 3;
+    gap: 8px;
     align-items: center;
     justify-content: space-between;
+
     padding: 20px 16px;
+
     border-top: 1px solid $grey-241;
   }
 
@@ -67,7 +85,13 @@
     @include set-font-size(14px, 16px, 600);
 
     cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    text-transform: none;
     letter-spacing: -0.01rem;
+
     border: none;
     border-radius: $ui-border-radius-m;
 
