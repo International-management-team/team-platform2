@@ -65,6 +65,7 @@ export const TaskSidebar = (): JSX.Element => {
         <form className={styles.form}>
           <InputTitle
             name={InputName.TASK_TITLE}
+            placeholder="Без названия"
             register={register}
             onChange={handleChange}
             onBlur={handleInputSubmit}
