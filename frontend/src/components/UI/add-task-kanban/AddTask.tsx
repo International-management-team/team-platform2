@@ -1,12 +1,13 @@
 import styles from './AddTask.module.scss';
 import { ReactComponent as PlusTask } from 'assets/plus.svg';
-import { ColumnItem } from 'src/components/kanban-table/KanbanTable';
+// import { ColumnItem } from 'src/components/kanban-table/KanbanTable';
 import { resetCurTask } from 'src/services/api/task/taskSlice';
+import { ColumnType } from 'src/services/api/task/taskTypes';
 import { useDispatch } from 'src/services/hooks';
 import { SidebarContent, openSidebar } from 'src/services/slices/sidebarSlice';
 
 type AddTaskProps = {
-  column: ColumnItem;
+  column: ColumnType;
 };
 
 export const AddTask = ({ column }: AddTaskProps) => {
