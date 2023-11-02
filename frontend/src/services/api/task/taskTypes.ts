@@ -21,23 +21,24 @@ export type TaskRequestData = {
 
 export type TaskStatus =
   | 'Backlog'
-  | 'To Do'
-  | 'In Progress'
-  | 'In Review'
+  | 'Todo'
+  | 'In progress'
+  | 'In review'
   | 'Done';
 
 type TaskStatusMapper = Record<TaskStatus, string>;
 export const taskStatusMapper: TaskStatusMapper = {
   Backlog: 'backlog',
   Done: 'done',
-  'In Progress': 'in_progress',
-  'In Review': 'in_review',
-  'To Do': 'todo',
+  'In progress': 'in_progress',
+  'In review': 'in_review',
+  Todo: 'todo',
 };
 
 export type ColumnType = {
   id: number;
-  title: TaskStatus;
+  title: string;
+  status: TaskStatus;
   tasks: TaskType[];
 };
 

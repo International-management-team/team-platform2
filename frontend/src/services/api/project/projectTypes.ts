@@ -36,11 +36,11 @@ export const projectStatusMapper: ProjectStatusMapper = {
   'To Do': 'todo',
 };
 
-export type ProjectPriority = 'maximum' | 'medium' | 'minimum';
+export type ProjectPriority = 'maximum' | 'average' | 'minimum';
 
 type ProjectPriorityMapper = Record<ProjectPriority, string>;
 export const projectPriorityMapper: ProjectPriorityMapper = {
   maximum: 'Высокий',
-  medium: 'Средний',
+  average: 'Средний',
   minimum: 'Низкий',
 };
