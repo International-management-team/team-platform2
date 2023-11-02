@@ -4,19 +4,30 @@ import { ReactComponent as FilterIcon } from 'assets/icon-filter-members.svg';
 import { Teammate } from '../team-teammate/Teammate';
 import { useState } from 'react';
 import { useSelector } from 'src/services/hooks';
-import { selectMembers } from 'src/services/api/team/teamSlice';
+import {
+  selectIntervals,
+  selectMembers,
+  selectSelectedInterval,
+} from 'src/services/api/team/teamSlice';
 import { formatPhoneNumber } from 'src/utils/formatting';
 import { selectAuthData } from 'src/services/api/auth/authSlice';
 import { UserType } from 'src/services/api/auth/authTypes';
 
 export const TeamArea = (): JSX.Element => {
-  const members = useSelector(selectMembers);
+  const allMembers = useSelector(selectMembers);
+  const selectedIntervalIndex = useSelector(selectSelectedInterval);
+  const intervals = useSelector(selectIntervals);
   const authData = useSelector(selectAuthData);
   const [isAllChecked, setIsAllChecked] = useState(false);
 
   const handlerAllChecked = () => {
     setIsAllChecked(!isAllChecked);
   };
+
+  const members =
+    selectedIntervalIndex === undefined
+      ? allMembers
+      : intervals[selectedIntervalIndex].members;
 
   const sortedMembersWithFirstCurUser: UserType[] = members
     .slice()

@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
-import { teamAPI } from './teamAPI';
+import { createArrayFromIntervals, teamAPI } from './teamAPI';
 import {
   AddMemberRequestData,
   IntervalType,
@@ -13,6 +13,7 @@ import { UserType } from '../auth/authTypes';
 type TeamStateType = {
   allMembers: UserType[];
   membersPerInterval: IntervalType[];
+  selectedIntervalIndex?: number;
   isLoading: boolean;
   error: null | unknown | string;
 };
@@ -41,6 +42,7 @@ export const teamThunks = {
       return response;
     },
   ),
+
   getMembers: createAsyncThunk('team/members', async (projectId: number) => {
     const members = await teamAPI.getMembers(projectId);
     return members;
@@ -50,7 +52,14 @@ export const teamThunks = {
 export const teamSlice = createSlice({
   name: 'team',
   initialState,
-  reducers: {},
+  reducers: {
+    selectInterval: (state, action: PayloadAction<number>) => {
+      state.selectedIntervalIndex = action.payload;
+    },
+    resetSelectedInterval: (state) => {
+      state.selectedIntervalIndex = undefined;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // add member
@@ -75,6 +84,7 @@ export const teamSlice = createSlice({
         state.error = false;
         state.allMembers = [];
         state.membersPerInterval = [];
+        state.selectedIntervalIndex = undefined;
       })
       .addCase(
         teamThunks.getMembers.fulfilled,
@@ -82,7 +92,9 @@ export const teamSlice = createSlice({
           state.isLoading = false;
           state.error = false;
           state.allMembers = action.payload.members;
-          state.membersPerInterval = action.payload.members_per_interval;
+          state.membersPerInterval = createArrayFromIntervals(
+            action.payload.members_per_interval,
+          );
         },
       )
       .addCase(
@@ -92,6 +104,7 @@ export const teamSlice = createSlice({
           state.error = action.payload;
           state.allMembers = [];
           state.membersPerInterval = [];
+          state.selectedIntervalIndex = undefined;
         },
       );
   },
@@ -99,8 +112,12 @@ export const teamSlice = createSlice({
 
 export const selectIntervals = (state: RootState) =>
   state.team.membersPerInterval;
+export const selectSelectedInterval = (state: RootState) =>
+  state.team.selectedIntervalIndex;
 export const selectMembers = (state: RootState) => state.team.allMembers;
 export const selectTeamIsLoading = (state: RootState) => state.team.isLoading;
 export const selectTeamError = (state: RootState) => state.team.error;
 
 export const { addMember, getMembers } = teamThunks;
+
+export const { selectInterval, resetSelectedInterval } = teamSlice.actions;
