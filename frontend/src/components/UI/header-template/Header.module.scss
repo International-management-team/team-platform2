@@ -21,6 +21,8 @@
   &__title {
     @include set-font-size(24px, 28px, 700);
 
+    flex: 1 1 500px;
+
     margin-block-start: 0;
     margin-block-end: 0;
 
@@ -32,6 +34,7 @@
   &__project-menu {
     @extend %flex-row;
 
+    flex: 1 1 376px;
     gap: 52px;
   }
 
