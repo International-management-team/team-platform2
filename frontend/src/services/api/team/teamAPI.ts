@@ -1,6 +1,11 @@
 import { request } from '../apiRequest';
 import { getRouteMemberAdd, getRouteMembers } from '../types';
-import { AddMemberRequestData, TeamResponseData } from './teamTypes';
+import {
+  AddMemberRequestData,
+  IntervalType,
+  ResponseIntervalType,
+  TeamResponseData,
+} from './teamTypes';
 
 export const teamAPI = {
   addMember: (
@@ -16,3 +21,15 @@ export const teamAPI = {
     return request.get<TeamResponseData>(getRouteMembers(projectId));
   },
 };
+
+export function createArrayFromIntervals(
+  intervals: ResponseIntervalType[],
+): IntervalType[] {
+  return intervals.map((interval) => {
+    return {
+      time: Object.keys(interval)[0],
+      members: interval[Object.keys(interval)[0]].members,
+      membersCount: interval[Object.keys(interval)[0]].members_count,
+    };
+  });
+}
